@@ -1,0 +1,560 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Laporan - Sistem Konsumsi Listrik</title>
+
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23fbbf24'><path d='M13.5 2 5 13.5h6L10 22l9-12h-6.2L13.5 2Z'/></svg>">
+
+    <link rel="stylesheet" href="../../css/global.css">
+    <link rel="stylesheet" href="../../css/components.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body class="page-laporan-pimpinan">
+
+<div class="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+
+        <div class="brand">
+
+            <div class="logo">
+                <svg viewBox="0 0 24 24">
+                    <path d="M13.5 2 5 13.5h6L10 22l9-12h-6.2L13.5 2Z"/>
+                </svg>
+            </div>
+
+            <span class="brand-text">
+                Sistem Konsumsi<br>Listrik
+            </span>
+
+        </div>
+
+        <nav class="nav">
+
+            <a href="dashboard.html" class="navitem">
+                <svg class="i" viewBox="0 0 24 24">
+                    <rect x="3" y="3" width="7" height="7" rx="2"/>
+                    <rect x="14" y="3" width="7" height="7" rx="2"/>
+                    <rect x="3" y="14" width="7" height="7" rx="2"/>
+                    <rect x="14" y="14" width="7" height="7" rx="2"/>
+                </svg>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="laporan.html" class="navitem active">
+                <svg class="i" viewBox="0 0 24 24">
+                    <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Z"/>
+                    <path d="M14 3v5h5"/>
+                    <path d="M9 13h6M9 17h4"/>
+                </svg>
+                <span>Laporan</span>
+            </a>
+
+            <a href="analisis.html" class="navitem">
+                <svg class="i" viewBox="0 0 24 24">
+                    <path d="M4 21V9M9 21V4M14 21V8M19 21V12"/>
+                    <path d="M2 21h20"/>
+                </svg>
+                <span>Analisis</span>
+            </a>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <a href="../auth/login.html" class="logout">
+                <svg class="i" viewBox="0 0 24 24">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                    <path d="M16 17l5-5-5-5"/>
+                    <path d="M21 12H9"/>
+                </svg>
+                <span>Keluar</span>
+            </a>
+
+        </div>
+
+    </aside>
+
+    <!-- AREA UTAMA -->
+    <div class="main">
+
+        <!-- HEADER -->
+        <header>
+
+            <button
+                class="hamb"
+                id="menuBtn"
+                type="button"
+                aria-label="Buka atau tutup sidebar"
+                aria-expanded="true">
+
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M5 7h14M5 12h10M5 17h14"/>
+                </svg>
+
+            </button>
+
+            <!-- PROFIL -->
+            <div class="profile-wrap">
+
+                <button
+                    class="profile"
+                    id="profileBtn"
+                    type="button"
+                    aria-haspopup="true"
+                    aria-expanded="false">
+
+                    <span>Pimpinan</span>
+
+                    <span class="avatar">
+                        <svg class="i" viewBox="0 0 24 24">
+                            <circle cx="12" cy="8" r="4"/>
+                            <path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/>
+                        </svg>
+                    </span>
+
+                    <span class="caret">⌄</span>
+
+                </button>
+
+                <!-- DROPDOWN PROFIL -->
+                <div
+                    class="dropdown"
+                    id="profileMenu"
+                    role="menu"
+                    hidden>
+
+                    <a href="edit-profil.html" role="menuitem">
+                        <svg class="i" viewBox="0 0 24 24">
+                            <circle cx="10" cy="8" r="4"/>
+                            <path d="M3 21c0-4 3-6.5 7-6.5"/>
+                            <path d="M13 21h3.5L21 16.5a1.8 1.8 0 0 0-2.5-2.5L13 19.5V21Z"/>
+                        </svg>
+                        Edit Profil
+                    </a>
+
+                    <a href="pengaturan.html" role="menuitem">
+                        <svg class="i" viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="3"/>
+                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                        </svg>
+                        Pengaturan
+                    </a>
+
+                </div>
+
+            </div>
+
+        </header>
+
+        <!-- KONTEN LAPORAN -->
+        <main class="content">
+
+            <h1 class="page-title">
+                Laporan Konsumsi Listrik
+            </h1>
+
+            <p class="page-subtitle">
+                Rekapitulasi pemakaian listrik berdasarkan ruangan dan periode
+            </p>
+
+            <!-- FILTER LAPORAN -->
+            <div class="filters">
+
+                <label for="month">Bulan</label>
+
+                <select id="month">
+                    <option value="">Semua Bulan</option>
+                    <option>Jan</option>
+                    <option>Feb</option>
+                    <option>Mar</option>
+                    <option>Apr</option>
+                    <option>Mei</option>
+                    <option>Jun</option>
+                    <option>Jul</option>
+                    <option>Agu</option>
+                    <option>Sep</option>
+                    <option selected>Okt</option>
+                    <option>Nov</option>
+                    <option>Des</option>
+                </select>
+
+                <label for="year">Tahun</label>
+
+                <select id="year" class="year-select">
+                    <option>2026</option>
+                    <option>2025</option>
+                    <option>2024</option>
+                </select>
+
+                <label for="statusFilter">Status</label>
+
+                <select id="statusFilter" class="status-select">
+                    <option value="">Semua Status</option>
+                    <option>NORMAL</option>
+                    <option>BOROS</option>
+                    <option>HEMAT</option>
+                </select>
+
+                <div class="filter-actions">
+
+                    <button class="btn-show" id="showBtn" type="button">
+                        Tampilkan
+                    </button>
+
+                    <button class="btn-pdf" id="pdfBtn" type="button">
+
+                        <svg class="i" viewBox="0 0 24 24">
+                            <path d="M6 9V3h12v6"/>
+                            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+                            <path d="M6 14h12v7H6z"/>
+                            <path d="M17 12h.01"/>
+                        </svg>
+
+                        Cetak PDF
+
+                    </button>
+
+                </div>
+
+            </div>
+
+            <!-- PENCARIAN -->
+            <div class="search">
+
+                <svg class="i" viewBox="0 0 24 24">
+                    <circle cx="11" cy="11" r="7"/>
+                    <path d="m20 20-4-4"/>
+                </svg>
+
+                <input
+                    type="text"
+                    id="search"
+                    placeholder="Pencarian..."
+                    aria-label="Cari laporan">
+
+            </div>
+
+            <!-- TABEL LAPORAN -->
+            <div class="table-wrap">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama Ruangan</th>
+                            <th>Total kWh</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="rows"></tbody>
+
+                </table>
+
+            </div>
+
+            <!-- PAGINATION -->
+            <div class="pagination">
+
+                <button id="back" type="button" disabled>
+                    Back
+                </button>
+
+                <span id="pageCount">1 / 1</span>
+
+                <button id="next" type="button">
+                    Next
+                </button>
+
+            </div>
+
+        </main>
+
+    </div>
+
+</div>
+
+<!-- NOTIFIKASI -->
+<div class="notice" id="notice"></div>
+
+<!-- JAVASCRIPT -->
+<script>
+    /* =================================
+       DATA LAPORAN
+    ================================= */
+
+    const sample = [
+        {id:1, month:'Okt', year:'2026', room:'R. Kelas A', kwh:800, status:'NORMAL'},
+        {id:2, month:'Okt', year:'2026', room:'L. Komputer', kwh:1200, status:'BOROS'},
+        {id:3, month:'Okt', year:'2026', room:'R. Dosen', kwh:150, status:'HEMAT'},
+        {id:4, month:'Okt', year:'2026', room:'R. T.U', kwh:200, status:'HEMAT'},
+        {id:5, month:'Sep', year:'2026', room:'R. Kelas A', kwh:750, status:'NORMAL'},
+        {id:6, month:'Sep', year:'2026', room:'L. Komputer', kwh:1100, status:'BOROS'},
+        {id:7, month:'Agu', year:'2026', room:'R. Dosen', kwh:180, status:'HEMAT'},
+        {id:8, month:'Agu', year:'2026', room:'R. T.U', kwh:250, status:'HEMAT'}
+    ];
+
+    let reports;
+
+    try {
+        reports = JSON.parse(
+            localStorage.getItem('laporan-pimpinan-konsumsi-listrik')
+        ) || sample;
+    } catch (error) {
+        reports = sample;
+    }
+
+    let page = 1;
+    const perPage = 4;
+
+    const $ = id => document.getElementById(id);
+
+    const formatNumber = number =>
+        Number(number).toLocaleString('id-ID');
+
+    /* =================================
+       NOTIFIKASI
+    ================================= */
+
+    function notify(message) {
+        const notice = $('notice');
+
+        notice.textContent = message;
+        notice.style.display = 'block';
+
+        clearTimeout(window.noticeTimer);
+
+        window.noticeTimer = setTimeout(() => {
+            notice.style.display = 'none';
+        }, 2500);
+    }
+
+    /* =================================
+       FILTER DATA
+    ================================= */
+
+    function filteredReports() {
+        const month = $('month').value;
+        const year = $('year').value;
+        const status = $('statusFilter').value;
+        const search = $('search').value.trim().toLowerCase();
+
+        return reports.filter(report => {
+            return (
+                (!month || report.month === month) &&
+                (!year || report.year === year) &&
+                (!status || report.status === status) &&
+                (
+                    `${report.room} ${report.month} ${report.year} ${report.kwh} ${report.status}`
+                ).toLowerCase().includes(search)
+            );
+        });
+    }
+
+    /* =================================
+       TAMPILKAN DATA
+    ================================= */
+
+    function render() {
+        const list = filteredReports();
+
+        const totalPages = Math.max(
+            1,
+            Math.ceil(list.length / perPage)
+        );
+
+        if (page > totalPages) {
+            page = totalPages;
+        }
+
+        const start = (page - 1) * perPage;
+
+        const displayed = list.slice(
+            start,
+            start + perPage
+        );
+
+        if (displayed.length > 0) {
+
+            $('rows').innerHTML = displayed.map((report, index) => `
+                <tr>
+                    <td>${start + index + 1}</td>
+                    <td>${report.room}</td>
+                    <td>${formatNumber(report.kwh)} kWh</td>
+                    <td>
+                        <span class="status ${report.status.toLowerCase()}">
+                            ${report.status}
+                        </span>
+                    </td>
+                </tr>
+            `).join('');
+
+        } else {
+
+            $('rows').innerHTML = `
+                <tr>
+                    <td colspan="4" class="empty">
+                        Tidak ada data laporan yang sesuai.
+                    </td>
+                </tr>
+            `;
+
+        }
+
+        $('pageCount').textContent =
+            `${page} / ${totalPages}`;
+
+        $('back').disabled = page <= 1;
+        $('next').disabled = page >= totalPages;
+    }
+
+    /* =================================
+       TOMBOL TAMPILKAN
+    ================================= */
+
+    $('showBtn').addEventListener('click', () => {
+        page = 1;
+        render();
+        notify('Laporan berhasil ditampilkan.');
+    });
+
+    /* =================================
+       PENCARIAN
+    ================================= */
+
+    $('search').addEventListener('input', () => {
+        page = 1;
+        render();
+    });
+
+    /* =================================
+       FILTER BULAN, TAHUN, STATUS
+    ================================= */
+
+    ['month', 'year', 'statusFilter'].forEach(id => {
+
+        $(id).addEventListener('change', () => {
+            page = 1;
+            render();
+        });
+
+    });
+
+    /* =================================
+       PAGINATION
+    ================================= */
+
+    $('back').addEventListener('click', () => {
+
+        if (page > 1) {
+            page--;
+            render();
+        }
+
+    });
+
+    $('next').addEventListener('click', () => {
+
+        const totalPages = Math.max(
+            1,
+            Math.ceil(filteredReports().length / perPage)
+        );
+
+        if (page < totalPages) {
+            page++;
+            render();
+        }
+
+    });
+
+    /* =================================
+       CETAK PDF
+    ================================= */
+
+    $('pdfBtn').addEventListener('click', () => {
+        window.print();
+    });
+
+    /* =================================
+       HAMBURGER SIDEBAR
+    ================================= */
+
+    const sidebar = $('sidebar');
+    const menuBtn = $('menuBtn');
+
+    menuBtn.addEventListener('click', () => {
+
+        sidebar.classList.toggle('collapsed');
+
+        menuBtn.setAttribute(
+            'aria-expanded',
+            sidebar.classList.contains('collapsed') ? 'false' : 'true'
+        );
+
+    });
+
+    /* =================================
+       DROPDOWN PROFIL
+    ================================= */
+
+    const profileBtn = $('profileBtn');
+    const profileMenu = $('profileMenu');
+
+    function setProfileMenu(open) {
+
+        profileMenu.hidden = !open;
+
+        profileBtn.setAttribute(
+            'aria-expanded',
+            open ? 'true' : 'false'
+        );
+
+    }
+
+    profileBtn.addEventListener('click', event => {
+
+        event.stopPropagation();
+
+        setProfileMenu(profileMenu.hidden);
+
+    });
+
+    document.addEventListener('click', event => {
+
+        if (
+            !profileMenu.contains(event.target) &&
+            !profileBtn.contains(event.target)
+        ) {
+            setProfileMenu(false);
+        }
+
+    });
+
+    document.addEventListener('keydown', event => {
+
+        if (event.key === 'Escape') {
+            setProfileMenu(false);
+        }
+
+    });
+
+    /* =================================
+       DATA AWAL
+    ================================= */
+
+    render();
+
+</script>
+
+</body>
+</html>
