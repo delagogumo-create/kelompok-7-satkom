@@ -1,0 +1,376 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Dashboard Operator - Sistem Konsumsi Listrik</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23fbbf24'><path d='M13.5 2 5 13.5h6L10 22l9-12h-6.2L13.5 2Z'/></svg>">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="../../css/global.css">
+  <link rel="stylesheet" href="../../css/components.css">
+</head>
+
+<body class="operator-page">
+
+<div class="window">
+
+  <!-- TITLEBAR -->
+  <div class="titlebar">
+    <div class="dots">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    <span class="close">
+      <svg class="i" viewBox="0 0 24 24">
+        <path d="M6 6l12 12M18 6L6 18"/>
+      </svg>
+    </span>
+  </div>
+
+  <div class="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar" aria-label="Sidebar Navigasi">
+
+      <div class="brand">
+        <div class="logo">
+          <svg viewBox="0 0 24 24">
+            <path d="M13.5 2 5 13.5h6L10 22l9-12h-6.2L13.5 2Z"/>
+          </svg>
+        </div>
+
+        <span class="brand-text">
+          Sistem Konsumsi<br>Listrik
+        </span>
+      </div>
+
+      <!-- MENU NAVIGASI -->
+      <nav class="nav" aria-label="Menu Utama">
+
+        <a href="dashboard.html" class="navitem active">
+          <svg class="i" viewBox="0 0 24 24">
+            <rect x="3" y="3" width="7" height="7" rx="2"/>
+            <rect x="14" y="3" width="7" height="7" rx="2"/>
+            <rect x="3" y="14" width="7" height="7" rx="2"/>
+            <rect x="14" y="14" width="7" height="7" rx="2"/>
+          </svg>
+          <span>Dashboard</span>
+        </a>
+
+        <a href="data-ruangan.html" class="navitem">
+          <svg class="i" viewBox="0 0 24 24">
+            <path d="M5 21V4a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v17"/>
+            <path d="M15 9h3a1 1 0 0 1 1 1v11"/>
+            <path d="M3 21h18"/>
+            <path d="M9 7h2M9 11h2M9 15h2"/>
+          </svg>
+          <span>Data Ruangan</span>
+        </a>
+
+        <a href="data-tagihan.html" class="navitem">
+          <svg class="i" viewBox="0 0 24 24">
+            <path d="M6 3h12v18l-3-2-3 2-3-2-3 2V3Z"/>
+            <path d="M9 8h6M9 12h6"/>
+          </svg>
+          <span>Data Tagihan</span>
+        </a>
+
+      </nav>
+
+      <!-- LOGOUT -->
+      <div class="sidebar-bottom">
+
+        <a href="../auth/login.html" class="logout">
+          <svg class="i" viewBox="0 0 24 24">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+            <path d="M16 17l5-5-5-5"/>
+            <path d="M21 12H9"/>
+          </svg>
+
+          <span>Keluar</span>
+        </a>
+
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <div class="main">
+
+      <!-- HEADER -->
+      <header class="topbar">
+
+        <button
+          class="hamb"
+          id="menuBtn"
+          type="button"
+          aria-label="Buka atau tutup sidebar"
+          aria-expanded="true">
+
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M5 7h14M5 12h10M5 17h14"/>
+          </svg>
+
+        </button>
+
+        <!-- PROFIL OPERATOR -->
+        <div class="profile-wrap">
+
+          <button
+            class="profile"
+            id="profileBtn"
+            type="button"
+            aria-haspopup="true"
+            aria-expanded="false">
+
+            Operator
+
+            <span class="avatar">
+              <svg class="i" viewBox="0 0 24 24">
+                <circle cx="12" cy="8" r="4"/>
+                <path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/>
+              </svg>
+            </span>
+
+          </button>
+
+          <!-- DROPDOWN -->
+          <div class="dropdown" id="profileMenu" role="menu" hidden>
+
+            <a href="edit-profil.html" role="menuitem">
+              <svg viewBox="0 0 24 24">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                <circle cx="8.5" cy="7" r="4"/>
+                <polyline points="17 11 19 13 23 9"/>
+              </svg>
+
+              Edit Profil
+            </a>
+
+            <a href="#" role="menuitem">
+              <svg viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="3"/>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l-.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06-.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+              </svg>
+
+              Pengaturan
+            </a>
+
+          </div>
+        </div>
+      </header>
+
+      <!-- KONTEN DASHBOARD -->
+      <main class="content">
+
+        <h1>Dashboard Operator</h1>
+
+        <p class="sub">
+          Input pemakaian listrik per ruangan dan pantau riwayatnya
+        </p>
+
+        <!-- FORM INPUT -->
+        <section class="card operator-card">
+
+          <h2>Input Pemakaian Listrik</h2>
+
+          <form id="inputForm" class="operator-form" novalidate>
+
+            <div class="filters">
+
+              <!-- RUANGAN -->
+              <div class="field">
+
+                <label for="ruangan">Ruangan</label>
+
+                <select id="ruangan">
+                  <option value="" selected disabled>Pilih ruangan</option>
+                  <option>R. Kelas A</option>
+                  <option>L. Komputer</option>
+                  <option>R. Dosen</option>
+                  <option>R. TU</option>
+                </select>
+
+              </div>
+
+              <!-- BULAN -->
+              <div class="field">
+
+                <label for="bulan">Bulan</label>
+
+                <select id="bulan">
+                  <option value="" selected disabled>Pilih bulan</option>
+                  <option>Oktober 2026</option>
+                  <option>November 2026</option>
+                </select>
+
+              </div>
+
+              <!-- PEMAKAIAN -->
+              <div class="field">
+
+                <label for="kwh">Pemakaian (kWh)</label>
+
+                <input
+                  id="kwh"
+                  type="number"
+                  min="0"
+                  placeholder="Masukkan angka">
+
+              </div>
+
+              <!-- SIMPAN -->
+              <button class="btn-primary" type="submit">
+                Simpan
+              </button>
+
+            </div>
+
+          </form>
+
+          <p class="operator-error" id="formError">
+            Harap lengkapi semua kolom.
+          </p>
+
+        </section>
+
+        <!-- TABEL RIWAYAT -->
+        <section class="card operator-card">
+
+          <h2>Riwayat Input Pemakaian</h2>
+
+          <div class="table-wrap">
+
+            <table>
+
+              <thead>
+                <tr>
+                  <th>Tanggal</th>
+                  <th>Ruangan</th>
+                  <th>Pemakaian (kWh)</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+
+              <tbody>
+
+                <tr>
+                  <td>10-10-2026</td>
+                  <td>R. Kelas A</td>
+                  <td>800</td>
+                  <td>
+                    <span class="badge boros">Boros</span>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>10-10-2026</td>
+                  <td>L. Komputer</td>
+                  <td>1.200</td>
+                  <td>
+                    <span class="badge normal">Normal</span>
+                  </td>
+                </tr>
+
+              </tbody>
+
+            </table>
+
+          </div>
+
+        </section>
+
+      </main>
+    </div>
+  </div>
+</div>
+
+<!-- JAVASCRIPT -->
+<script>
+(function () {
+
+  // DROPDOWN PROFIL
+  const btn = document.getElementById('profileBtn');
+  const menu = document.getElementById('profileMenu');
+
+  function setOpen(open) {
+    menu.hidden = !open;
+
+    btn.setAttribute(
+      'aria-expanded',
+      open ? 'true' : 'false'
+    );
+  }
+
+  if (btn && menu) {
+
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      setOpen(menu.hidden);
+    });
+
+    document.addEventListener('click', function (e) {
+      if (!menu.contains(e.target)) {
+        setOpen(false);
+      }
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        setOpen(false);
+      }
+    });
+
+  }
+
+  // SIDEBAR HAMBURGER
+  const menuBtn = document.getElementById('menuBtn');
+  const sidebar = document.getElementById('sidebar');
+
+  if (menuBtn && sidebar) {
+
+    menuBtn.addEventListener('click', function () {
+
+      sidebar.classList.toggle('collapsed');
+
+      menuBtn.setAttribute(
+        'aria-expanded',
+        sidebar.classList.contains('collapsed') ? 'false' : 'true'
+      );
+
+    });
+
+  }
+
+  // DROPDOWN PROFIL OPERATOR
+const profileToggle = document.getElementById('profileToggle');
+const profileDropdown = document.getElementById('profileDropdown');
+
+if (profileToggle && profileDropdown) {
+
+  profileToggle.addEventListener('click', function () {
+
+    const isOpen = profileToggle.classList.toggle('is-open');
+
+    profileDropdown.classList.toggle('show', isOpen);
+
+    profileToggle.setAttribute('aria-expanded', isOpen);
+
+  });
+
+}
+
+})();
+</script>
+
+</body>
+</html>
