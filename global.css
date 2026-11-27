@@ -1,0 +1,611 @@
+/* =========================================
+   GLOBAL CSS - SISTEM KONSUMSI LISTRIK
+   Mengatur dasar dan kerangka seluruh halaman
+========================================= */
+
+
+/* =========================================
+   1. RESET DAN VARIABEL WARNA
+========================================= */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --navy: #0f2a43;
+  --navy-hover: #1b3a57;
+  --blue: #1d5fa8;
+  --blue-soft: #dbeafe;
+  --yellow: #f5b400;
+  --text: #1e293b;
+  --muted: #64748b;
+  --border: #e3e7ee;
+  --background: #f5f7fb;
+  --white: #ffffff;
+}
+
+
+/* =========================================
+   2. DASAR HALAMAN
+========================================= */
+
+html {
+  min-height: 100%;
+}
+
+body {
+  min-height: 100vh;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 13px;
+  color: var(--text);
+  background: var(--background);
+}
+
+
+/* =========================================
+   3. PEMBUNGKUS APLIKASI
+========================================= */
+
+.window,
+.app {
+  width: 100%;
+  min-height: 100vh;
+}
+
+.window {
+  background: var(--background);
+}
+
+.app {
+  display: flex;
+}
+
+.titlebar {
+  display: none;
+}
+
+
+/* =========================================
+   4. SIDEBAR
+========================================= */
+
+.sidebar {
+  width: 230px;
+  min-width: 230px;
+  min-height: 100vh;
+  padding: 24px 14px;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  overflow: hidden;
+  background: var(--navy);
+  color: var(--white);
+  transition: width 0.3s ease,
+              min-width 0.3s ease,
+              padding 0.3s ease;
+}
+
+
+/* BRAND DAN LOGO */
+
+.brand {
+  min-height: 42px;
+  margin-bottom: 32px;
+  padding: 0 6px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand .logo {
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 11px;
+  background: var(--yellow);
+}
+
+.brand .logo svg {
+  width: 25px;
+  height: 25px;
+  fill: var(--navy);
+  stroke: none;
+}
+
+.brand > span {
+  color: var(--white);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+
+/* NAVIGASI SIDEBAR */
+
+.sidebar :is(nav, .nav) {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.sidebar :is(nav, .nav) .navitem {
+  width: 100%;
+  min-height: 38px;
+  padding: 9px 11px;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  border: none;
+  border-radius: 7px;
+  background: transparent;
+  color: #cbd5e1;
+  font-family: inherit;
+  font-size: 12px;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.2s ease,
+              color 0.2s ease;
+}
+
+.sidebar :is(nav, .nav) .navitem .i {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+}
+
+.sidebar :is(nav, .nav) .navitem:is(:hover, .active) {
+  background: var(--navy-hover);
+  color: var(--white);
+}
+
+.sidebar :is(nav, .nav) .navitem.active {
+  font-weight: 700;
+}
+
+
+/* TULISAN SIDEBAR */
+
+.sidebar .navitem span,
+.sidebar .logout span,
+.sidebar .brand-text {
+  display: inline-block;
+  max-width: 160px;
+  overflow: hidden;
+  white-space: nowrap;
+  opacity: 1;
+  transition: max-width 0.3s ease,
+              opacity 0.2s ease;
+}
+
+
+/* BAGIAN BAWAH SIDEBAR */
+
+.sidebar-bottom {
+  margin-top: auto;
+  padding-top: 20px;
+}
+
+.sidebar .logout {
+  width: 100%;
+  min-height: 38px;
+  padding: 9px 11px;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  border-radius: 7px;
+  color: #cbd5e1;
+  font-size: 12px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.2s ease,
+              color 0.2s ease;
+}
+
+.sidebar .logout:hover {
+  background: var(--navy-hover);
+  color: var(--white);
+}
+
+.sidebar .logout .i {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+}
+
+
+/* =========================================
+   5. SIDEBAR COLLAPSE
+========================================= */
+
+.sidebar.collapsed {
+  width: 75px;
+  min-width: 75px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+/* Sembunyikan tulisan */
+
+.sidebar.collapsed .navitem span,
+.sidebar.collapsed .logout span,
+.sidebar.collapsed .brand-text {
+  max-width: 0;
+  opacity: 0;
+}
+
+/* Pusatkan logo */
+
+.sidebar.collapsed .brand {
+  justify-content: center;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* Pusatkan ikon menu */
+
+.sidebar.collapsed :is(nav, .nav) .navitem,
+.sidebar.collapsed .logout {
+  justify-content: center;
+  gap: 0;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* Pertahankan ukuran ikon */
+
+.sidebar.collapsed .navitem .i,
+.sidebar.collapsed .logout .i {
+  flex-shrink: 0;
+}
+
+
+/* =========================================
+   6. AREA UTAMA
+========================================= */
+
+.main {
+  min-width: 0;
+  min-height: 100vh;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* =========================================
+   7. HEADER UTAMA
+========================================= */
+
+.main > header {
+  height: 66px;
+  min-height: 66px;
+  padding: 0 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+}
+
+
+/* =========================================
+   8. TOMBOL HAMBURGER
+========================================= */
+
+.hamb {
+  position: relative;
+  width: 38px !important;
+  height: 38px !important;
+  min-width: 38px !important;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: none !important;
+  border-radius: 10px !important;
+  background: #2060a8 !important;
+  box-shadow: 0 3px 8px rgba(32, 96, 168, 0.30) !important;
+  cursor: pointer;
+  transition: background 0.2s ease,
+              transform 0.2s ease;
+}
+
+.hamb:hover {
+  background: #174f8a !important;
+  transform: translateY(-1px);
+}
+
+.hamb:active {
+  transform: scale(0.95);
+}
+
+.hamb:focus-visible {
+  outline: 3px solid #bfdbfe;
+  outline-offset: 2px;
+}
+
+/* Sembunyikan SVG lama */
+
+.hamb svg {
+  display: none !important;
+}
+
+/* Ikon hamburger */
+
+.hamb::before {
+  content: "";
+  width: 20px;
+  height: 20px;
+  display: block;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100% 100%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 7h14M5 12h10M5 17h14'/%3E%3C/svg%3E");
+}
+
+
+/* =========================================
+   9. AREA PROFIL
+========================================= */
+
+.profile-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.profile {
+  min-width: 130px;
+  padding: 5px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 9px;
+  border: none;
+  background: transparent;
+  color: var(--blue);
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.avatar {
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--blue-soft);
+  color: var(--blue);
+}
+
+.avatar .i {
+  width: 21px;
+  height: 21px;
+  fill: none;
+  stroke: var(--blue);
+  stroke-width: 1.7;
+}
+
+.caret {
+  color: var(--blue);
+  font-size: 15px;
+}
+
+
+/* =========================================
+   10. PEMBUNGKUS KONTEN
+========================================= */
+
+.content {
+  width: 100%;
+  min-width: 0;
+  flex: 1;
+  padding: 25px 28px;
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* =========================================
+   11. IKON UMUM
+========================================= */
+
+.i {
+  width: 18px;
+  height: 18px;
+  display: block;
+  flex-shrink: 0;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+
+/* =========================================
+   12. DROPDOWN PROFIL
+========================================= */
+
+.dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 1000;
+  width: 180px;
+  padding: 6px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--white);
+  box-shadow: 0 6px 18px rgba(15, 42, 67, 0.12);
+}
+
+.dropdown[hidden] {
+  display: none;
+}
+
+.dropdown a {
+  width: 100%;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 12px;
+  text-decoration: none;
+  transition: background 0.2s ease,
+              color 0.2s ease;
+}
+
+.dropdown a:hover {
+  background: var(--blue-soft);
+  color: var(--blue);
+}
+
+.dropdown .i {
+  width: 17px;
+  height: 17px;
+  min-width: 17px;
+}
+
+
+/* =========================================
+   13. RESPONSIVE TABLET
+========================================= */
+
+@media (max-width: 768px) {
+
+  .sidebar {
+    width: 190px;
+    min-width: 190px;
+    padding: 20px 10px;
+  }
+
+  .sidebar.collapsed {
+    width: 75px;
+    min-width: 75px;
+  }
+
+  .main > header {
+    padding: 0 16px;
+  }
+
+  .content {
+    padding: 18px 16px;
+  }
+
+  .brand > span {
+    font-size: 12px;
+  }
+}
+
+
+/* =========================================
+   14. RESPONSIVE HP
+========================================= */
+
+@media (max-width: 520px) {
+
+  .sidebar {
+    width: 165px;
+    min-width: 165px;
+  }
+
+  .sidebar.collapsed {
+    width: 65px;
+    min-width: 65px;
+  }
+
+  .content {
+    padding: 14px 10px;
+  }
+
+  .main > header {
+    padding: 0 10px;
+  }
+}
+
+/* =========================================
+   WARNA HALAMAN EDIT PROFIL
+========================================= */
+
+:root {
+    --profile-primary: #1d5fa8;
+    --profile-primary-hover: #174b87;
+    --profile-primary-soft: #dbeafe;
+    --profile-success: #15803d;
+    --profile-danger: #dc2626;
+    --profile-card-bg: #ffffff;
+    --profile-input-bg: #f8fafc;
+}
+
+/* =====================================================
+   GLOBAL STYLE
+   SISTEM KONSUMSI LISTRIK
+===================================================== */
+
+:root {
+    --navy: #102d48;
+    --navy-hover: #1d4568;
+
+    --blue: #2872ed;
+    --blue-dark: #205da8;
+    --blue-soft: #e3edff;
+
+    --text: #17324f;
+    --muted: #647895;
+
+    --border: #dce5f0;
+    --background: #f3f6fb;
+    --white: #ffffff;
+
+    --yellow: #ffbd00;
+
+    --font-main: 'Inter', Arial, sans-serif;
+}
+
+/* RESET GLOBAL */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    font-family: var(--font-main);
+    color: var(--text);
+    background: var(--background);
+}
+
+button,
+input,
+select,
+textarea {
+    font-family: inherit;
+}
+
+a {
+    text-decoration: none;
+}
