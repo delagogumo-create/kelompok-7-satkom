@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laporan (Admin) - Sistem Konsumsi Listrik</title>
+
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23fbbf24'><path d='M13.5 2 5 13.5h6L10 22l9-12h-6.2L13.5 2Z'/></svg>">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    
+    <link rel="stylesheet" href="../../css/global.css">
+    <link rel="stylesheet" href="../../css/components.css">
+
+    <style>
+      body {
+        font-family: 'Inter', Arial, sans-serif;
+      }
+    </style>
+</head>
+<body>
+  <div class="window">
+    <!-- Title bar browser -->
+    <div class="titlebar">
+      <div class="dots"><span></span><span></span><span></span></div>
+      <span class="close">
+        <svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </span>
+    </div>
+
+    <div class="app">
+      <!-- Sidebar -->
+      <aside class="sidebar" id="sidebar" aria-label="Sidebar Navigasi">
+        <div class="brand">
+          <div class="logo">
+            <svg viewBox="0 0 24 24"><path d="M13.5 2 5 13.5h6L10 22l9-12h-6.2L13.5 2Z"/></svg>
+          </div>
+          <span class="brand-text">Sistem Konsumsi<br>Listrik</span>
+        </div>
+
+        <nav class="nav" aria-label="Menu Utama">
+          <a href="#" class="navitem">
+            <svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="2.5"/><rect x="14" y="3" width="7" height="7" rx="2.5"/><rect x="3" y="14" width="7" height="7" rx="2.5"/><rect x="14" y="14" width="7" height="7" rx="2.5"/></svg>
+            <span>Dashboard</span>
+          </a>
+          <a href="#" class="navitem">
+            <svg class="i" viewBox="0 0 24 24"><path d="M4 21V9M9 21V4M14 21V8M19 21V12"/><path d="M2 21h20"/></svg>
+            <span>Data Ruangan</span>
+          </a>
+          <a href="#" class="navitem">
+            <svg class="i" viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></svg>
+            <span>Data Tagihan</span>
+          </a>
+          <a href="#" class="navitem">
+            <svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>
+            <span>Edit User</span>
+          </a>
+          <a href="#" class="navitem active">
+            <svg class="i" viewBox="0 0 24 24"><path d="M3 5.5C5.5 4 9 4 12 6c3-2 6.5-2 9-.5V19c-2.5-1.5-6-1.5-9 .5-3-2-6.5-2-9-.5V5.5Z"/><path d="M12 6v13.5"/></svg>
+            <span>Laporan</span>
+          </a>
+        </nav>
+
+        <div class="sidebar-bottom">
+          <a href="#" class="logout">
+            <svg class="i" viewBox="0 0 24 24"><path d="M10 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h4"/><path d="M14 8l4 4-4 4"/><path d="M18 12H8"/></svg>
+            <span>Keluar</span>
+          </a>
+        </div>
+      </aside>
+
+      <!-- Main -->
+      <div class="main">
+        <header class="topbar">
+          <button class="hamb" id="menuBtn" type="button"
+                  aria-label="Buka atau tutup sidebar"
+                  aria-expanded="true">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M5 7h14M5 12h10M5 17h14"/>
+            </svg>
+          </button>
+
+          <div class="profile-wrap">
+            <button class="profile" id="profileBtn" type="button" aria-haspopup="true" aria-expanded="false">
+              Admin
+              <span class="avatar">
+                <svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>
+              </span>
+            </button>
+            <div class="dropdown" id="profileMenu" role="menu" hidden>
+              <a href="#" role="menuitem">
+                <svg class="i" viewBox="0 0 24 24"><circle cx="10" cy="8" r="4"/><path d="M3 21c0-4 3-6.5 7-6.5"/><path d="M13 21h3.5L21 16.5a1.8 1.8 0 0 0-2.5-2.5L13 19.5V21Z"/></svg>
+                Edit Profil
+              </a>
+              <a href="#" role="menuitem">
+                <svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                Pengaturan
+              </a>
+            </div>
+          </div>
+        </header>
+
+        <main class="content">
+          <div class="report">
+            <div class="filters">
+              <label for="bulan">Bulan</label>
+              <select id="bulan">
+                <option>Jan</option><option>Feb</option><option>Mar</option><option>Apr</option>
+                <option>Mei</option><option>Jun</option><option>Jul</option><option>Agu</option>
+                <option>Sep</option><option selected>Okt</option><option>Nov</option><option>Des</option>
+              </select>
+              <label for="tahun">Tahun</label>
+              <select id="tahun"><option>2024</option><option>2025</option><option selected>2026</option></select>
+
+              <span></span>
+              <select id="status" aria-label="Status">
+                <option>Semua Status</option><option>Normal</option><option>Boros</option><option>Hemat</option>
+              </select>
+              <span></span>
+              <div class="filter-actions">
+                <button class="btn-primary" type="button">Tampilkan</button>
+                <button class="btn-outline" type="button" onclick="window.print()">
+                  <svg class="i" viewBox="0 0 24 24"><path d="M6 9V3h12v6"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="7" rx="1"/></svg>
+                  Cetak PDF
+                </button>
+              </div>
+            </div>
+
+            <div class="search search-wide">
+              <svg class="i" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+              <input type="text" placeholder="Pencarian" aria-label="Pencarian">
+            </div>
+
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>No</th><th>Nama Ruangan</th><th>Total kWh</th><th>STATUS</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>1</td><td>R. Kelas A</td><td>800 kWh</td><td><span class="badge normal">Normal</span></td></tr>
+                  <tr><td>2</td><td>L. Komputer</td><td>1.200 kWh</td><td><span class="badge boros">Boros</span></td></tr>
+                  <tr><td>3</td><td>R. Dosen</td><td>150 kWh</td><td><span class="badge hemat">Hemat</span></td></tr>
+                  <tr><td>4</td><td>R. T.U</td><td>200 kWh</td><td><span class="badge hemat">Hemat</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="pagination report-pag">
+              <button class="back" type="button" disabled>Back</button>
+              <span class="page-info">1 / 1</span>
+              <button class="next" type="button" disabled>Next</button>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var btn = document.getElementById('profileBtn');
+      var menu = document.getElementById('profileMenu');
+
+      function setOpen(open) {
+        menu.hidden = !open;
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      }
+
+      btn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        setOpen(menu.hidden);
+      });
+
+      document.addEventListener('click', function (e) {
+        if (!menu.contains(e.target)) setOpen(false);
+      });
+
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') setOpen(false);
+      });
+
+      // Hamburger sidebar
+      var menuBtn = document.getElementById('menuBtn');
+      var sidebar = document.getElementById('sidebar');
+
+      menuBtn.addEventListener('click', function () {
+        sidebar.classList.toggle('collapsed');
+        menuBtn.setAttribute(
+          'aria-expanded',
+          sidebar.classList.contains('collapsed') ? 'false' : 'true'
+        );
+      });
+    })();
+  </script>
+</body>
+</html>
