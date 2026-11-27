@@ -1,282 +1,269 @@
 (function () {
-  const BARIS_PER_HALAMAN = 5;
-  const BATAS_HEMAT = 500;
-  const BATAS_BOROS = 1000;
 
-  // ===== KAMUS TERJEMAHAN =====
-  const KAMUS_RUANGAN = {
-    'kelas': 'Classroom', 'komputer': 'Computer', 'dosen': 'Lecturer',
-    'guru': 'Teacher', 'tu': 'Administration Office', 'rapat': 'Meeting',
-    'lab': 'Lab', 'seminar': 'Seminar', 'perpustakaan': 'Library',
-    'musholla': 'Prayer', 'umum': 'General', 'jt1': 'JT1'
-  };
+    /* =================================
+       BAHASA
+    ================================= */
 
-  const TANPA_AKHIRAN = { 'Classroom': true, 'Library': true, 'Administration Office': true };
+    function bacaBahasa() {
+        var data = {};
+        try {
+            data = JSON.parse(localStorage.getItem('pengaturanPimpinan')) || {};
+        } catch (e) {}
 
-  const KAMUS_BULAN = {
-    'januari': 'January', 'februari': 'February', 'maret': 'March',
-    'april': 'April', 'mei': 'May', 'juni': 'June', 'juli': 'July',
-    'agustus': 'August', 'september': 'September', 'oktober': 'October',
-    'november': 'November', 'desember': 'December'
-  };
-
-  const STATUS_EN = { 'Hemat': 'Efficient', 'Normal': 'Normal', 'Boros': 'Wasteful' };
-
-  const DICT = {
-    id: {
-      dashboard: "Dashboard", dataRuangan: "Data Ruangan", dataTagihan: "Data Tagihan",
-      keluar: "Keluar", editProfil: "Edit Profil", pengaturan: "Pengaturan",
-      dashOperatorTitle: "Dashboard Operator",
-      dashOperatorSub: "Input pemakaian listrik per ruangan dan pantau riwayatnya",
-      inputListrikTitle: "Input Pemakaian Listrik",
-      labelRuangan: "Ruangan", pilihRuangan: "Pilih ruangan",
-      labelBulan: "Bulan", pilihBulan: "Pilih bulan",
-      labelKwh: "Pemakaian (kWh)", placeholderKwh: "Masukkan angka",
-      btnSimpan: "Simpan", riwayatTitle: "Riwayat Input Pemakaian",
-      thTanggal: "Tanggal", thRuangan: "Ruangan", thKwh: "Pemakaian (kWh)", thStatus: "Status",
-      btnBack: "Back", btnNext: "Next",
-      wajib: "Harap lengkapi semua kolom.", negatif: "Pemakaian tidak boleh kurang dari 0.",
-      kosong: "Belum ada riwayat input"
-    },
-    en: {
-      dashboard: "Dashboard", dataRuangan: "Room Data", dataTagihan: "Billing Data",
-      keluar: "Logout", editProfil: "Edit Profile", pengaturan: "Settings",
-      dashOperatorTitle: "Operator Dashboard",
-      dashOperatorSub: "Input room electricity usage and monitor history",
-      inputListrikTitle: "Input Electricity Usage",
-      labelRuangan: "Room", pilihRuangan: "Select room",
-      labelBulan: "Month", pilihBulan: "Select month",
-      labelKwh: "Usage (kWh)", placeholderKwh: "Enter number",
-      btnSimpan: "Save", riwayatTitle: "Usage Input History",
-      thTanggal: "Date", thRuangan: "Room", thKwh: "Usage (kWh)", thStatus: "Status",
-      btnBack: "Back", btnNext: "Next",
-      wajib: "Please fill in all fields.", negatif: "Usage cannot be less than 0.",
-      kosong: "No input history yet"
+        var b = String(data.bahasa || data.language || data.lang || '').toLowerCase();
+        return (b === 'en' || b.indexOf('eng') === 0 || b.indexOf('ing') === 0) ? 'en' : 'id';
     }
-  };
 
-  function getLang() {
-    try {
-      const saved = JSON.parse(localStorage.getItem('pengaturanAdmin') || localStorage.getItem('pengaturanOperator') || '{}');
-      if (saved && saved.bahasa) {
-        return /^id/i.test(String(saved.bahasa).trim()) ? 'id' : 'en';
-      }
-    } catch (e) {}
-    return 'id';
-  }
+    var bahasa = bacaBahasa();
+    document.documentElement.lang = bahasa;
 
-  function t(kunci) {
-    const lang = getLang();
-    return (DICT[lang] && DICT[lang][kunci]) ? DICT[lang][kunci] : (DICT['id'][kunci] || kunci);
-  }
+    if (bahasa === 'en') {
 
-  function applyTranslations() {
-    const lang = getLang();
-    document.querySelectorAll('[data-i18n]').forEach(el => {
-      const key = el.getAttribute('data-i18n');
-      if (DICT[lang][key]) el.textContent = DICT[lang][key];
+        // Kamus: tulisan Indonesia -> Inggris (harus sama persis dengan di HTML)
+        var kamus = {
+            'Pimpinan': 'Leader',
+            'Dashboard Pimpinan': 'Leader Dashboard',
+            'Laporan': 'Reports',
+            'Analisis': 'Analysis',
+            'Keluar': 'Logout',
+            'Edit Profil': 'Edit Profile',
+            'Pengaturan': 'Settings',
+            'Total Pemakaian Listrik': 'Total Electricity Usage',
+            'Efisiensi Rata-rata': 'Average Efficiency',
+            'Perbandingan per Ruangan': 'Comparison per Room',
+            'Pemakaian listrik (kWh)': 'Electricity usage (kWh)',
+            'Buka atau tutup sidebar': 'Open or close sidebar',
+            'Grafik batang pemakaian listrik per ruangan': 'Bar chart of electricity usage per room'
+        };
+
+        // Tulisan yang berisi angka/bulan
+        var pola = [
+            [/^Peringatan: (\d+) ruang Boros$/, 'Warning: $1 wasteful rooms'],
+            [/^Ringkasan konsumsi dan efisiensi energi gedung kampus, Oktober (\d+)$/,
+                'Summary of campus building energy consumption and efficiency, October $1']
+        ];
+
+        function terjemah(teks) {
+            if (kamus[teks]) return kamus[teks];
+            for (var i = 0; i < pola.length; i++) {
+                if (pola[i][0].test(teks)) return teks.replace(pola[i][0], pola[i][1]);
+            }
+            return teks;
+        }
+
+        // Kalimat peringatan (ada link di tengah)
+        var alertP = document.querySelector('.alert p');
+        if (alertP) {
+            alertP.innerHTML =
+                'See efficiency recommendations in the ' +
+                '<a href="analisis.php" id="linkAnalisis">Analysis</a> menu.';
+        }
+
+        // Nama aplikasi di sidebar
+        var brand = document.querySelector('.brand-text');
+        if (brand) brand.innerHTML = 'Electricity Usage<br>System';
+
+        // Ganti semua teks biasa
+        var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+        var node;
+        while ((node = walker.nextNode())) {
+            var parent = node.parentNode.nodeName;
+            if (parent === 'SCRIPT' || parent === 'STYLE') continue;
+
+            var asli = node.nodeValue;
+            var bersih = asli.trim();
+            if (!bersih) continue;
+
+            var hasil = terjemah(bersih);
+            if (hasil !== bersih) {
+                node.nodeValue = asli.replace(bersih, hasil);
+            }
+        }
+
+        // Ganti atribut title dan aria-label
+        document.querySelectorAll('[title], [aria-label]').forEach(function (el) {
+            ['title', 'aria-label'].forEach(function (attr) {
+                var nilai = el.getAttribute(attr);
+                if (nilai && kamus[nilai]) el.setAttribute(attr, kamus[nilai]);
+            });
+        });
+
+        document.title = 'Leader Dashboard - Electricity Usage System';
+    }
+
+    /* =================================
+       DROPDOWN PROFIL
+    ================================= */
+
+    const profileBtn = document.getElementById('profileBtn');
+    const profileMenu = document.getElementById('profileMenu');
+
+    function setProfileOpen(open) {
+        profileMenu.hidden = !open;
+        profileBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+
+    profileBtn.addEventListener('click', function (event) {
+        event.stopPropagation();
+        setProfileOpen(profileMenu.hidden);
     });
-    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
-      const key = el.getAttribute('data-i18n-placeholder');
-      if (DICT[lang][key]) el.placeholder = DICT[lang][key];
+
+    document.addEventListener('click', function (event) {
+        if (!profileMenu.contains(event.target) && !profileBtn.contains(event.target)) {
+            setProfileOpen(false);
+        }
     });
-  }
 
-  function terjemahkanRuangan(nama) {
-    const teks = String(nama).trim();
-    const m = teks.match(/^(ruang|laboratorium|lab|r|l)(?:\.\s*|\s+)(\S+)\s*(.*)$/i);
-    if (!m) return teks;
-    const awalan = m[1].toLowerCase();
-    const kataInti = m[2].toLowerCase().replace(/\./g, '');
-    let inti = KAMUS_RUANGAN[kataInti];
-    if (!inti && kataInti.indexOf('perpus') === 0) inti = 'Library';
-    if (!inti) return teks;
-    const sisa = m[3] ? ' ' + m[3] : '';
-    if (TANPA_AKHIRAN[inti]) return inti + sisa;
-    const jenis = (awalan === 'l' || awalan === 'lab' || awalan === 'laboratorium') ? 'Lab' : 'Room';
-    return inti + ' ' + jenis + sisa;
-  }
-
-  function terjemahkanBulan(teks) {
-    return String(teks).replace(/[A-Za-z]+/g, function (kata) {
-      return KAMUS_BULAN[kata.toLowerCase()] || kata;
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape') {
+            setProfileOpen(false);
+        }
     });
-  }
 
-  function namaRuanganTampil(nama) {
-    return getLang() === 'en' ? terjemahkanRuangan(nama) : nama;
-  }
+    /* =================================
+       HAMBURGER SIDEBAR
+    ================================= */
 
-  function namaStatusTampil(status) {
-    return getLang() === 'en' ? STATUS_EN[status] : status;
-  }
+    const menuBtn = document.getElementById('menuBtn');
+    const sidebar = document.getElementById('sidebar');
 
-  // ===== GAYA PESAN ERROR & TOAST =====
-  const gayaOperator = document.createElement('style');
-  gayaOperator.textContent = `
-    .operator-form { position: relative; padding-bottom: 22px; }
-    .operator-form .field { position: relative; }
-    .operator-form .field small.pesan-kolom {
-      display: none;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      margin-top: 4px;
-      color: #dc2626;
-      font-size: 13px !important;
-      font-weight: 400 !important;
-    }
-    .operator-form .field.invalid small.pesan-kolom { display: block; }
-    .operator-form .field.invalid select,
-    .operator-form .field.invalid input { border-color: #dc2626; }
+    menuBtn.addEventListener('click', function () {
+        sidebar.classList.toggle('collapsed');
 
-    .toast-operator {
-      position: fixed; top: 18px; left: 50%; z-index: 4000;
-      display: flex; align-items: center; gap: 10px; padding: 12px 20px;
-      border-radius: 12px; background: #dcfce7; border: 1px solid #86efac; color: #166534;
-      font: 600 14px Inter, Arial, sans-serif; box-shadow: 0 10px 26px rgba(15, 42, 67, .18);
-      opacity: 0; transform: translateX(-50%) translateY(-24px); transition: opacity .25s ease, transform .25s ease;
-      pointer-events: none;
-    }
-    .toast-operator.tampil { opacity: 1; transform: translateX(-50%) translateY(0); }
-    .toast-operator svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 2; }
-  `;
-  document.head.appendChild(gayaOperator);
-
-  function tampilkanToast(pesan) {
-    let toast = document.getElementById('toastOperator');
-    if (!toast) {
-      toast = document.createElement('div');
-      toast.id = 'toastOperator';
-      toast.className = 'toast-operator';
-      document.body.appendChild(toast);
-    }
-    toast.innerHTML = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12.5l3 3 5-6"/></svg><span>' + pesan + '</span>';
-    toast.classList.add('tampil');
-    setTimeout(() => toast.classList.remove('tampil'), 3000);
-  }
-
-  // ===== DATA DARI DATABASE =====
-  const dataRiwayat = Array.isArray(window.DATA_RIWAYAT_DB) ? window.DATA_RIWAYAT_DB : [];
-
-  const form = document.getElementById('inputForm');
-  const selRuangan = document.getElementById('ruangan');
-  const selBulan = document.getElementById('bulan');
-  const inKwh = document.getElementById('kwh');
-  const badanTabel = document.getElementById('tabelRiwayat');
-  const tombolBack = document.getElementById('btnBack');
-  const tombolNext = document.getElementById('btnNext');
-  const infoHalaman = document.getElementById('infoHalaman');
-
-  let halamanSekarang = 1;
-  let fokusDariKode = false;
-
-  [selRuangan, selBulan, inKwh].forEach(el => {
-    const pesan = document.createElement('small');
-    pesan.className = 'pesan-kolom';
-    el.closest('.field').appendChild(pesan);
-    el.addEventListener('input', () => el.closest('.field').classList.remove('invalid'));
-    el.addEventListener('change', () => el.closest('.field').classList.remove('invalid'));
-    el.addEventListener('focus', () => { if (!fokusDariKode) el.closest('.field').classList.remove('invalid'); });
-  });
-
-  function hitungStatus(kwh) {
-    if (kwh < BATAS_HEMAT) return 'Hemat';
-    if (kwh < BATAS_BOROS) return 'Normal';
-    return 'Boros';
-  }
-
-  function formatAngka(n) {
-    return Number(n).toLocaleString(getLang() === 'id' ? 'id-ID' : 'en-US');
-  }
-
-  function perbaruiDropdown() {
-    const en = getLang() === 'en';
-    Array.from(selRuangan.options).forEach(opt => {
-      if (opt.value !== '') opt.textContent = en ? terjemahkanRuangan(opt.value) : opt.value;
+        menuBtn.setAttribute(
+            'aria-expanded',
+            sidebar.classList.contains('collapsed') ? 'false' : 'true'
+        );
     });
-    Array.from(selBulan.options).forEach(opt => {
-      if (opt.value !== '') opt.textContent = en ? terjemahkanBulan(opt.value) : opt.value;
+
+})();
+
+// ==========================================
+// KONFIRMASI KELUAR
+// ==========================================
+(function () {
+
+    // CSS kotak konfirmasi (disisipkan lewat JS)
+    var style = document.createElement('style');
+    style.textContent = `
+        .lo-overlay {
+            position: fixed; inset: 0; z-index: 9999;
+            display: none; align-items: center; justify-content: center;
+            background: rgba(15, 23, 42, 0.45);
+            backdrop-filter: blur(4px);
+        }
+        .lo-overlay.show { display: flex; }
+        .lo-box {
+            font-size: 16px;
+            background: #fff; border-radius: 1.25em;
+            width: min(92vw, 24em); padding: 1.7em 1.6em 1.5em;
+            text-align: center; font-family: 'Inter', Arial, sans-serif;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+        }
+        body.font-small  .lo-box { font-size: 14px; }
+        body.font-medium .lo-box { font-size: 16px; }
+        body.font-large  .lo-box { font-size: 18px; }
+        .lo-icon {
+            width: 4em; height: 4em; border-radius: 50%;
+            background: #fee2e2; margin: 0 auto 1em;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .lo-icon svg {
+            width: 1.9em; height: 1.9em; fill: none; stroke: #dc2626;
+            stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+        }
+        .lo-title { margin: 0 0 0.45em; font-size: 1.25em; font-weight: 800; color: #0f2a44; }
+        .lo-text { margin: 0 0 1.3em; font-size: 0.9em; line-height: 1.6; color: #64748b; }
+        .lo-actions { display: flex; gap: 0.7em; }
+        .lo-actions button {
+            flex: 1; padding: 0.8em 0.6em; border-radius: 0.7em;
+            font-size: 0.95em; font-weight: 700; cursor: pointer;
+            font-family: inherit;
+        }
+        .lo-cancel { background: #fff; color: #0f2a44; border: 1px solid #e2e8f0; }
+        .lo-confirm { background: #dc2626; color: #fff; border: 1px solid #dc2626; }
+    `;
+    document.head.appendChild(style);
+
+    // Teks sesuai bahasa
+    function teks() {
+        var inggris = document.documentElement.lang === 'en';
+        return inggris ? {
+            title: 'Log out of your account?',
+            text: 'You are about to log out of the Electricity Consumption System. Make sure your work has been saved.',
+            cancel: 'Cancel',
+            confirm: 'Yes, Log Out'
+        } : {
+            title: 'Keluar dari akun?',
+            text: 'Anda akan keluar dari Sistem Konsumsi Listrik. Pastikan pekerjaan Anda sudah tersimpan.',
+            cancel: 'Batal',
+            confirm: 'Ya, Keluar'
+        };
+    }
+
+    // Buat kotak
+    var overlay = document.createElement('div');
+    overlay.className = 'lo-overlay';
+    overlay.setAttribute('role', 'dialog');
+    overlay.setAttribute('aria-modal', 'true');
+    overlay.innerHTML = `
+        <div class="lo-box">
+            <div class="lo-icon">
+                <svg viewBox="0 0 24 24">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                    <path d="M16 17l5-5-5-5"/>
+                    <path d="M21 12H9"/>
+                </svg>
+            </div>
+            <h3 class="lo-title"></h3>
+            <p class="lo-text"></p>
+            <div class="lo-actions">
+                <button type="button" class="lo-cancel"></button>
+                <button type="button" class="lo-confirm"></button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(overlay);
+
+    var tujuan = '../auth/login.php';
+
+    function buka(href) {
+        var t = teks();
+        tujuan = href || tujuan;
+
+        overlay.querySelector('.lo-title').textContent = t.title;
+        overlay.querySelector('.lo-text').textContent = t.text;
+        overlay.querySelector('.lo-cancel').textContent = t.cancel;
+        overlay.querySelector('.lo-confirm').textContent = t.confirm;
+
+        overlay.classList.add('show');
+        overlay.querySelector('.lo-cancel').focus();
+    }
+
+    function tutup() {
+        overlay.classList.remove('show');
+    }
+
+    overlay.querySelector('.lo-cancel').addEventListener('click', tutup);
+
+    overlay.querySelector('.lo-confirm').addEventListener('click', function () {
+        window.location.href = tujuan;
     });
-  }
 
-  function buatBaris(item) {
-    const status = hitungStatus(item.kwh);
-    const baris = document.createElement('tr');
-    baris.innerHTML = '<td></td><td></td><td></td><td><span class="badge"></span></td>';
-    baris.children[0].textContent = item.tanggal;
-    baris.children[1].textContent = namaRuanganTampil(item.ruangan);
-    baris.children[2].textContent = formatAngka(item.kwh);
+    overlay.addEventListener('click', function (e) {
+        if (e.target === overlay) tutup();
+    });
 
-    const lencana = baris.querySelector('.badge');
-    lencana.textContent = namaStatusTampil(status);
-    lencana.classList.add(status.toLowerCase());
-    return baris;
-  }
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') tutup();
+    });
 
-  function tampilkanTabel() {
-    const totalHalaman = Math.max(1, Math.ceil(dataRiwayat.length / BARIS_PER_HALAMAN));
-    if (halamanSekarang > totalHalaman) halamanSekarang = totalHalaman;
+    // Pasang ke semua tombol Keluar
+    document.querySelectorAll('.logout').forEach(function (el) {
+        el.addEventListener('click', function (e) {
+            e.preventDefault();
+            buka(el.getAttribute('href'));
+        });
+    });
 
-    const awal = (halamanSekarang - 1) * BARIS_PER_HALAMAN;
-    const tampil = dataRiwayat.slice(awal, awal + BARIS_PER_HALAMAN);
-
-    badanTabel.innerHTML = '';
-    if (tampil.length === 0) {
-      badanTabel.innerHTML = '<tr class="baris-kosong"><td colspan="4" style="text-align:center; padding:20px;">' + t('kosong') + '</td></tr>';
-    } else {
-      tampil.forEach(item => badanTabel.appendChild(buatBaris(item)));
-    }
-
-    infoHalaman.textContent = halamanSekarang + ' / ' + totalHalaman;
-    tombolBack.disabled = halamanSekarang <= 1;
-    tombolNext.disabled = halamanSekarang >= totalHalaman;
-  }
-
-  tombolBack.addEventListener('click', () => { if (halamanSekarang > 1) { halamanSekarang--; tampilkanTabel(); } });
-  tombolNext.addEventListener('click', () => {
-    if (halamanSekarang < Math.ceil(dataRiwayat.length / BARIS_PER_HALAMAN)) { halamanSekarang++; tampilkanTabel(); }
-  });
-
-  form.addEventListener('submit', async function (e) {
-    e.preventDefault();
-    const ruangan = selRuangan.value;
-    const bulan = selBulan.value;
-    const kwh = inKwh.value;
-
-    let errEl = null;
-    if (ruangan === '') { selRuangan.closest('.field').classList.add('invalid'); selRuangan.closest('.field').querySelector('.pesan-kolom').textContent = t('wajib'); errEl = errEl || selRuangan; }
-    if (bulan === '') { selBulan.closest('.field').classList.add('invalid'); selBulan.closest('.field').querySelector('.pesan-kolom').textContent = t('wajib'); errEl = errEl || selBulan; }
-    if (kwh === '') { inKwh.closest('.field').classList.add('invalid'); inKwh.closest('.field').querySelector('.pesan-kolom').textContent = t('wajib'); errEl = errEl || inKwh; }
-    else if (Number(kwh) < 0) { inKwh.closest('.field').classList.add('invalid'); inKwh.closest('.field').querySelector('.pesan-kolom').textContent = t('negatif'); errEl = errEl || inKwh; }
-
-    if (errEl) {
-      fokusDariKode = true; errEl.focus(); fokusDariKode = false;
-      return;
-    }
-
-    const fd = new FormData();
-    fd.append('ruangan', ruangan);
-    fd.append('bulan', bulan);
-    fd.append('kwh', kwh);
-
-    try {
-      const res = await fetch('dashboard.php', { method: 'POST', body: fd });
-      const json = await res.json();
-      if (json.status === 'sukses') {
-        tampilkanToast(t('sukses'));
-        setTimeout(() => location.reload(), 1200);
-      } else {
-        alert(json.pesan);
-      }
-    } catch (err) {
-      alert('Gagal terhubung ke server');
-    }
-  });
-
-  window.addEventListener('storage', () => { applyTranslations(); perbaruiDropdown(); tampilkanTabel(); });
-
-  applyTranslations();
-  perbaruiDropdown();
-  tampilkanTabel();
 })();
