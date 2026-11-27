@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Edit User - Sistem Konsumsi Listrik</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../../css/global.css">
+    <link rel="stylesheet" href="../../css/components.css">
+</head>
+
+<body class="page-edit-user">
+
+<div class="window">
+<div class="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+
+        <div class="brand">
+            <div class="logo">
+                <svg viewBox="0 0 24 24">
+                    <path d="M13.5 2 5 13.5h6L10 22l9-12h-6.2L13.5 2Z"/>
+                </svg>
+            </div>
+
+            <span class="brand-text">
+                Sistem Konsumsi<br>Listrik
+            </span>
+        </div>
+
+        <nav class="nav">
+
+            <a href="dashboard.html" class="navitem" title="Dashboard">
+                <svg class="i" viewBox="0 0 24 24">
+                    <rect x="3" y="3" width="7" height="7" rx="2"/>
+                    <rect x="14" y="3" width="7" height="7" rx="2"/>
+                    <rect x="3" y="14" width="7" height="7" rx="2"/>
+                    <rect x="14" y="14" width="7" height="7" rx="2"/>
+                </svg>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="data-ruangan.html" class="navitem" title="Data Ruangan">
+                <svg class="i" viewBox="0 0 24 24">
+                    <path d="M4 21V9M9 21V4M14 21V8M19 21V12"/>
+                    <path d="M2 21h20"/>
+                </svg>
+                <span>Data Ruangan</span>
+            </a>
+
+            <a href="data-tagihan.html" class="navitem" title="Data Tagihan">
+                <svg class="i" viewBox="0 0 24 24">
+                    <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Z"/>
+                    <path d="M14 3v5h5M9 13h6M9 17h4"/>
+                </svg>
+                <span>Data Tagihan</span>
+            </a>
+
+            <a href="edit-profil.html" class="navitem active" title="Edit User">
+                <svg class="i" viewBox="0 0 24 24">
+                    <circle cx="12" cy="8" r="4"/>
+                    <path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/>
+                </svg>
+                <span>Edit User</span>
+            </a>
+
+            <a href="laporan.html" class="navitem" title="Laporan">
+                <svg class="i" viewBox="0 0 24 24">
+                    <path d="M3 5.5C5.5 4 9 4 12 6c3-2 6.5-2 9-.5V19c-2.5-1.5-6-1.5-9 .5-3-2-6.5-2-9-.5V5.5Z"/>
+                    <path d="M12 6v13.5"/>
+                </svg>
+                <span>Laporan</span>
+            </a>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+            <a href="#" class="logout" id="logout" title="Keluar">
+                <svg class="i" viewBox="0 0 24 24">
+                    <path d="M10 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h4"/>
+                    <path d="M14 8l4 4-4 4M18 12H8"/>
+                </svg>
+                <span>Keluar</span>
+            </a>
+        </div>
+
+    </aside>
+
+    <!-- AREA UTAMA -->
+    <div class="main">
+
+        <!-- TOPBAR -->
+        <header class="topbar">
+
+            <button class="hamb" id="menuBtn" type="button"
+                    aria-label="Buka atau tutup menu navigasi"
+                    aria-expanded="true">
+
+                <svg class="i" viewBox="0 0 24 24">
+                    <path d="M4 7h16M4 12h10M4 17h16"/>
+                </svg>
+
+            </button>
+
+            <!-- PROFIL ADMIN -->
+            <div class="profile-wrap">
+
+                <button class="profile" id="profileBtn" type="button"
+                        aria-haspopup="true" aria-expanded="false">
+
+                    Admin
+
+                    <span class="avatar">
+                        <svg class="i" viewBox="0 0 24 24">
+                            <circle cx="12" cy="8" r="4"/>
+                            <path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/>
+                        </svg>
+                    </span>
+
+                    <span class="caret">⌄</span>
+
+                </button>
+
+                <!-- MENU DROPDOWN -->
+                <div class="dropdown" id="profileMenu" role="menu" hidden>
+
+                    <a href="edit-profil.html" role="menuitem">
+                        <svg class="i" viewBox="0 0 24 24">
+                            <circle cx="10" cy="8" r="4"/>
+                            <path d="M3 21c0-4 3-6.5 7-6.5"/>
+                            <path d="M13 21h3.5L21 16.5a1.8 1.8 0 0 0-2.5-2.5L13 19.5V21Z"/>
+                        </svg>
+                        <span>Edit Profil</span>
+                    </a>
+
+                    <a href="pengaturan.html" role="menuitem">
+                        <svg class="i" viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="3"/>
+                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                        </svg>
+                        <span>Pengaturan</span>
+                    </a>
+
+                </div>
+
+            </div>
+
+        </header>
+
+        <!-- KONTEN EDIT USER -->
+        <main class="content">
+
+            <h1>Edit User</h1>
+
+            <p class="sub">
+                Perbarui data akun dan kata sandi Anda
+            </p>
+
+            <div class="profile-layout">
+
+                <!-- KARTU FOTO PROFIL -->
+                <section class="profile-card">
+
+                    <div class="avatar-lg">
+                        <svg viewBox="0 0 24 24">
+                            <circle cx="12" cy="8" r="4"/>
+                            <path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7Z"/>
+                        </svg>
+                    </div>
+
+                    <h3>Admin</h3>
+                    <p class="role">Administrator</p>
+
+                    <button class="btn-photo" type="button"
+                            onclick="document.getElementById('photoInput').click()">
+                        Ganti Foto
+                    </button>
+
+                    <input type="file" id="photoInput"
+                           accept="image/png,image/jpeg" hidden>
+
+                    <p class="hint">
+                        Format JPG atau PNG, maksimal 2 MB
+                    </p>
+
+                </section>
+
+                <!-- FORM INFORMASI AKUN -->
+                <section class="form-card">
+
+                    <form id="profileForm">
+
+                        <h2>Informasi Akun</h2>
+
+                        <div class="form-grid">
+
+                            <div class="field">
+                                <label for="nama">Nama Lengkap</label>
+                                <input id="nama" type="text"
+                                       value="Admin" required>
+                            </div>
+
+                            <div class="field">
+                                <label for="email">Email</label>
+                                <input id="email" type="email"
+                                       value="admin@contoh.com" required>
+                            </div>
+
+                        </div>
+
+                        <div class="form-grid">
+
+                            <div class="field">
+                                <label for="telp">No. Telepon</label>
+                                <input id="telp" type="tel"
+                                       placeholder="Masukkan nomor telepon">
+                            </div>
+
+                            <div class="field">
+                                <label for="jabatan">Jabatan</label>
+                                <input id="jabatan" type="text"
+                                       value="Administrator" disabled>
+                            </div>
+
+                        </div>
+
+                        <div class="form-divider"></div>
+
+                        <h2>Masukkan Kata Sandi</h2>
+
+                        <div class="field password-field">
+
+                            
+
+                        </div>
+
+                        <div class="form-grid">
+
+                            <div class="field">
+                                <label for="baru">Kata Sandi Baru</label>
+
+                                <input id="baru" type="password"
+                                       minlength="8"
+                                       autocomplete="new-password"
+                                       placeholder="Minimal 8 karakter">
+                            </div>
+
+                            <div class="field">
+                                <label for="konfirmasi">
+                                    Konfirmasi Kata Sandi
+                                </label>
+
+                                <input id="konfirmasi" type="password"
+                                       autocomplete="new-password"
+                                       placeholder="Ulangi kata sandi baru">
+                            </div>
+
+                        </div>
+
+                        <div class="form-actions">
+
+                            <button class="btn-cancel" type="reset">
+                                Batal
+                            </button>
+
+                            <button class="btn-save" type="submit">
+                                Simpan Perubahan
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </section>
+
+            </div>
+
+        </main>
+
+    </div>
+
+</div>
+</div>
+
+<!-- JAVASCRIPT -->
+<script>
+
+// DROPDOWN PROFIL
+const profileBtn = document.getElementById('profileBtn');
+const profileMenu = document.getElementById('profileMenu');
+
+profileBtn.addEventListener('click', function(event) {
+
+    event.stopPropagation();
+
+    profileMenu.hidden = !profileMenu.hidden;
+
+    profileBtn.setAttribute(
+        'aria-expanded',
+        profileMenu.hidden ? 'false' : 'true'
+    );
+
+});
+
+document.addEventListener('click', function(event) {
+
+    if (
+        !profileMenu.contains(event.target) &&
+        !profileBtn.contains(event.target)
+    ) {
+
+        profileMenu.hidden = true;
+
+        profileBtn.setAttribute('aria-expanded', 'false');
+
+    }
+
+});
+
+document.addEventListener('keydown', function(event) {
+
+    if (event.key === 'Escape') {
+
+        profileMenu.hidden = true;
+
+        profileBtn.setAttribute('aria-expanded', 'false');
+
+    }
+
+});
+
+// HAMBURGER SIDEBAR
+const menuBtn = document.getElementById('menuBtn');
+const sidebar = document.getElementById('sidebar');
+
+menuBtn.addEventListener('click', function() {
+
+    const isCollapsed = sidebar.classList.toggle('collapsed');
+
+    menuBtn.setAttribute(
+        'aria-expanded',
+        isCollapsed ? 'false' : 'true'
+    );
+
+});
+
+// GANTI FOTO PROFIL
+const photoInput = document.getElementById('photoInput');
+const avatar = document.querySelector('.avatar-lg');
+
+photoInput.addEventListener('change', function() {
+
+    const file = this.files[0];
+
+    if (!file) return;
+
+    if (!['image/jpeg', 'image/png'].includes(file.type)) {
+
+        alert('Silakan pilih gambar JPG atau PNG.');
+        this.value = '';
+        return;
+
+    }
+
+    if (file.size > 2 * 1024 * 1024) {
+
+        alert('Ukuran foto maksimal 2 MB.');
+        this.value = '';
+        return;
+
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = function(event) {
+
+        avatar.innerHTML = '';
+
+        const img = document.createElement('img');
+
+        img.src = event.target.result;
+        img.alt = 'Foto profil Admin';
+
+        avatar.appendChild(img);
+
+    };
+
+    reader.readAsDataURL(file);
+
+});
+
+// FORM EDIT USER
+document.getElementById('profileForm').addEventListener('submit', function(event) {
+
+    event.preventDefault();
+
+    const password = document.getElementById('baru').value;
+    const confirmPassword = document.getElementById('konfirmasi').value;
+
+    if (password && password !== confirmPassword) {
+
+        alert('Konfirmasi kata sandi baru tidak sesuai.');
+        return;
+
+    }
+
+    alert('Perubahan berhasil disiapkan. Penyimpanan permanen memerlukan backend.');
+
+});
+
+// LOGOUT DEMO
+document.getElementById('logout').addEventListener('click', function(event) {
+
+    event.preventDefault();
+
+    alert('Fungsi keluar (demo).');
+
+});
+
+</script>
+
+</body>
+</html>
