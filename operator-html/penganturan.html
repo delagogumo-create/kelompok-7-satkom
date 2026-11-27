@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Pengaturan Operator - Sistem Konsumsi Listrik</title>
+
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23fbbf24'><path d='M13.5 2 5 13.5h6L10 22l9-12h-6.2L13.5 2Z'/></svg>">
+
+    <link rel="stylesheet" href="../../css/global.css">
+    <link rel="stylesheet" href="../../css/components.css">
+</head>
+
+<body class="page-pengaturan">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+        <div class="brand">
+            <div class="logo">
+                <svg viewBox="0 0 24 24">
+                    <path d="M13.5 2 5 13.5h6L10 22l9-12h-6.2L13.5 2Z"/>
+                </svg>
+            </div>
+            <span>Sistem Konsumsi<br>Listrik</span>
+        </div>
+
+        <!-- MENU NAVIGASI -->
+        <nav class="nav" aria-label="Menu Utama">
+            <a href="dashboard.html" class="navitem active">
+                <svg class="i" viewBox="0 0 24 24">
+                    <rect x="3" y="3" width="7" height="7" rx="2"/>
+                    <rect x="14" y="3" width="7" height="7" rx="2"/>
+                    <rect x="3" y="14" width="7" height="7" rx="2"/>
+                    <rect x="14" y="14" width="7" height="7" rx="2"/>
+                </svg>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="data-ruangan.html" class="navitem">
+                <svg class="i" viewBox="0 0 24 24">
+                    <path d="M5 21V4a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v17"/>
+                    <path d="M15 9h3a1 1 0 0 1 1 1v11"/>
+                    <path d="M3 21h18"/>
+                    <path d="M9 7h2M9 11h2M9 15h2"/>
+                </svg>
+                <span>Data Ruangan</span>
+            </a>
+
+            <a href="data-tagihan.html" class="navitem">
+                <svg class="i" viewBox="0 0 24 24">
+                    <path d="M6 3h12v18l-3-2-3 2-3-2-3 2V3Z"/>
+                    <path d="M9 8h6M9 12h6"/>
+                </svg>
+                <span>Data Tagihan</span>
+            </a>
+        </nav>
+
+        <a href="../auth/login.html" class="logout">
+            <svg class="i" viewBox="0 0 24 24">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                <path d="m16 17 5-5-5-5M21 12H9"/>
+            </svg>
+            Keluar
+        </a>
+    </aside>
+
+    <!-- MAIN -->
+    <div class="main">
+        <header class="topbar">
+            <button class="hamburger" id="menuBtn" type="button" aria-label="Buka atau tutup menu">
+                <svg class="i" viewBox="0 0 24 24">
+                    <path d="M4 7h16M4 12h10M4 17h16"/>
+                </svg>
+            </button>
+
+            <div class="profile-wrap">
+                <button class="profile-btn" id="profileBtn" type="button">
+                    <span>Operator</span>
+                    <span class="avatar">
+                        <svg class="i" viewBox="0 0 24 24">
+                            <circle cx="12" cy="8" r="4"/>
+                            <path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/>
+                        </svg>
+                    </span>
+                    <svg class="arrow" viewBox="0 0 24 24">
+                        <path d="m7 10 5 5 5-5"/>
+                    </svg>
+                </button>
+
+                <!-- DROPDOWN PROFIL -->
+                <div class="dropdown" id="profileMenu" role="menu" hidden>
+                    <a href="edit-profil.html" role="menuitem">
+                        <svg class="dropdown-icon" viewBox="0 0 24 24">
+                            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                            <circle cx="9" cy="7" r="4"/>
+                            <path d="M19 11l3 3L13 23l-4 1 1-4 9-9z"/>
+                        </svg>
+                        <span>Edit Profil</span>
+                    </a>
+                    <a href="pengaturan.html" role="menuitem">
+                        <svg class="dropdown-icon" viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="3"/>
+                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                        </svg>
+                        <span>Pengaturan</span>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <!-- KONTEN -->
+        <main class="content">
+            <div class="page-heading">
+                <h1>Pengaturan</h1>
+                <p>Atur bahasa dan tampilan aplikasi</p>
+            </div>
+
+            <section class="settings-card">
+                <form id="settingsForm">
+                    <div class="language-field">
+                        <label for="bahasa">Bahasa</label>
+                        <select id="bahasa" name="bahasa">
+                            <option value="id">Bahasa Indonesia</option>
+                            <option value="en">English</option>
+                        </select>
+                    </div>
+
+                    <div class="setting-row">
+                        <div class="setting-info">
+                            <strong>Tema</strong>
+                            <small>Pilih warna tampilan aplikasi</small>
+                        </div>
+                        <div class="seg">
+                            <label>
+                                <input type="radio" name="tema" value="terang" checked>
+                                <span>Terang</span>
+                            </label>
+                            <label>
+                                <input type="radio" name="tema" value="gelap">
+                                <span>Gelap</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="setting-row">
+                        <div class="setting-info">
+                            <strong>Ukuran Huruf</strong>
+                            <small>Atur besar teks agar nyaman dibaca</small>
+                        </div>
+                        <div class="seg">
+                            <label>
+                                <input type="radio" name="huruf" value="kecil">
+                                <span>Kecil</span>
+                            </label>
+                            <label>
+                                <input type="radio" name="huruf" value="sedang" checked>
+                                <span>Sedang</span>
+                            </label>
+                            <label>
+                                <input type="radio" name="huruf" value="besar">
+                                <span>Besar</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="setting-row sidebar-setting">
+                        <div class="setting-info">
+                            <strong>Sidebar terbuka otomatis</strong>
+                            <small>Tampilkan menu samping secara penuh saat halaman dibuka</small>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="sidebarOtomatis" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="reset" class="btn-cancel">Batal</button>
+                        <button type="submit" class="btn-save">Simpan Pengaturan</button>
+                    </div>
+                </form>
+            </section>
+        </main>
+    </div>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        // HAMBURGER SIDEBAR
+        const menuBtn = document.getElementById('menuBtn');
+        menuBtn.addEventListener('click', function () {
+            document.body.classList.toggle('nav-collapsed');
+        });
+
+        // DROPDOWN PROFIL
+        const profileBtn = document.getElementById('profileBtn');
+        const profileMenu = document.getElementById('profileMenu');
+
+        profileBtn.addEventListener('click', function (event) {
+            event.stopPropagation();
+            profileMenu.hidden = !profileMenu.hidden;
+        });
+
+        document.addEventListener('click', function (event) {
+            if (!profileBtn.contains(event.target) && !profileMenu.contains(event.target)) {
+                profileMenu.hidden = true;
+            }
+        });
+
+        // PENGATURAN OPERATOR
+        const settingsForm = document.getElementById('settingsForm');
+        const storageKey = 'pengaturanOperator';
+
+        function applySettings(data) {
+            document.body.classList.toggle('dark-theme', data.tema === 'gelap');
+            
+            document.body.classList.remove('font-small', 'font-medium', 'font-large');
+            const fontClass = {
+                kecil: 'font-small',
+                sedang: 'font-medium',
+                besar: 'font-large'
+            };
+            document.body.classList.add(fontClass[data.huruf] || 'font-medium');
+
+            document.body.classList.toggle('nav-collapsed', data.sidebarOtomatis === false);
+        }
+
+        // MEMUAT PENGATURAN
+        function loadSettings() {
+            const defaults = {
+                bahasa: 'id',
+                tema: 'terang',
+                huruf: 'sedang',
+                sidebarOtomatis: true
+            };
+
+            let data = defaults;
+
+            try {
+                const saved = localStorage.getItem(storageKey);
+                if (saved) {
+                    data = { ...defaults, ...JSON.parse(saved) };
+                }
+            } catch (error) {
+                console.error('Gagal membaca pengaturan:', error);
+            }
+
+            document.getElementById('bahasa').value = data.bahasa;
+
+            const temaInput = document.querySelector(`input[name="tema"][value="${data.tema}"]`);
+            if (temaInput) {
+                temaInput.checked = true;
+            }
+
+            const hurufInput = document.querySelector(`input[name="huruf"][value="${data.huruf}"]`);
+            if (hurufInput) {
+                hurufInput.checked = true;
+            }
+
+            document.getElementById('sidebarOtomatis').checked = data.sidebarOtomatis !== false;
+
+            applySettings(data);
+        }
+
+        // SIMPAN PENGATURAN
+        settingsForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const temaChecked = document.querySelector('input[name="tema"]:checked');
+            const hurufChecked = document.querySelector('input[name="huruf"]:checked');
+
+            const data = {
+                bahasa: document.getElementById('bahasa').value,
+                tema: temaChecked ? temaChecked.value : 'terang',
+                huruf: hurufChecked ? hurufChecked.value : 'sedang',
+                sidebarOtomatis: document.getElementById('sidebarOtomatis').checked
+            };
+
+            localStorage.setItem(storageKey, JSON.stringify(data));
+            applySettings(data);
+            alert('Pengaturan Operator berhasil disimpan.');
+        });
+
+        // TOMBOL BATAL
+        settingsForm.addEventListener('reset', function () {
+            setTimeout(loadSettings, 0);
+        });
+
+        // JALANKAN SAAT HALAMAN DIBUKA
+        loadSettings();
+    </script>
+</body>
+</html>
