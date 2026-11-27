@@ -1,0 +1,361 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Admin - Sistem Konsumsi Listrik</title>
+
+  <!-- FONT -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- FAVICON -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23fbbf24'><path d='M13.5 2 5 13.5h6L10 22l9-12h-6.2L13.5 2Z'/></svg>">
+
+  <!-- CSS EKSTERNAL -->
+  <link rel="stylesheet" href="../../css/global.css">
+  <link rel="stylesheet" href="../../css/components.css">
+</head>
+
+<body class="dashboard-layout">
+
+<div class="window">
+  <div class="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar" aria-label="Sidebar Navigasi">
+
+      <div class="brand">
+        <div class="logo" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <path d="M13.5 2 5 13.5h6L10 22l9-12h-6.2L13.5 2Z"/>
+          </svg>
+        </div>
+
+        <span class="brand-text">
+          Sistem Konsumsi<br>Listrik
+        </span>
+      </div>
+
+      <!-- MENU NAVIGASI -->
+      <nav class="nav" aria-label="Menu Utama">
+
+        <a href="dashboard.html" class="navitem active" title="Dashboard">
+          <svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="3" y="3" width="7" height="7" rx="2"/>
+            <rect x="14" y="3" width="7" height="7" rx="2"/>
+            <rect x="3" y="14" width="7" height="7" rx="2"/>
+            <rect x="14" y="14" width="7" height="7" rx="2"/>
+          </svg>
+          <span>Dashboard</span>
+        </a>
+
+        <a href="data-ruangan.html" class="navitem" title="Data Ruangan">
+          <svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M5 21V4a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v17"/>
+            <path d="M15 9h3a1 1 0 0 1 1 1v11"/>
+            <path d="M3 21h18"/>
+            <path d="M9 7h2M9 11h2M9 15h2"/>
+          </svg>
+          <span>Data Ruangan</span>
+        </a>
+
+        <a href="data-tagihan.html" class="navitem" title="Data Tagihan">
+          <svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 3h12v18l-3-2-3 2-3-2-3 2V3Z"/>
+            <path d="M9 8h6M9 12h6"/>
+          </svg>
+          <span>Data Tagihan</span>
+        </a>
+
+        <a href="edit-profil.html" class="navitem" title="Edit User">
+          <svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="8" r="4"/>
+            <path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/>
+          </svg>
+          <span>Edit User</span>
+        </a>
+
+        <a href="laporan.html" class="navitem" title="Laporan">
+          <svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Z"/>
+            <path d="M14 3v5h5"/>
+            <path d="M9 13h6M9 17h6"/>
+          </svg>
+          <span>Laporan</span>
+        </a>
+
+      </nav>
+
+      <!-- KELUAR -->
+      <div class="sidebar-bottom">
+        <a href="#" class="logout" title="Keluar">
+          <svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+            <path d="M16 17l5-5-5-5"/>
+            <path d="M21 12H9"/>
+          </svg>
+          <span>Keluar</span>
+        </a>
+      </div>
+
+    </aside>
+
+    <!-- AREA UTAMA -->
+    <div class="main">
+
+      <!-- HEADER -->
+      <header class="topbar">
+
+        <button class="hamb" id="menuBtn" type="button"
+          aria-label="Buka atau tutup menu navigasi"
+          aria-expanded="true">
+
+          <svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 7h16M4 12h10M4 17h16"/>
+          </svg>
+        </button>
+
+        <!-- PROFIL -->
+        <div class="profile-wrap">
+
+          <button class="profile" id="profileBtn" type="button"
+            aria-haspopup="true" aria-expanded="false">
+
+            Admin
+
+            <span class="avatar">
+              <svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="8" r="4"/>
+                <path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/>
+              </svg>
+            </span>
+
+            <span class="caret">⌄</span>
+          </button>
+
+          <!-- DROPDOWN PROFIL -->
+          <div class="dropdown" id="profileMenu" role="menu" hidden>
+
+            <a href="edit-profil.html" role="menuitem">
+              <svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="10" cy="8" r="4"/>
+                <path d="M3 21c0-4 3-6.5 7-6.5"/>
+                <path d="M13 21h3.5L21 16.5a1.8 1.8 0 0 0-2.5-2.5L13 19.5V21Z"/>
+              </svg>
+              Edit Profil
+            </a>
+
+            <a href="#" role="menuitem">
+              <svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="3"/>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l-.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+              </svg>
+              Pengaturan
+            </a>
+
+          </div>
+        </div>
+      </header>
+
+      <!-- KONTEN DASHBOARD -->
+      <main class="content">
+
+        <h1>Dashboard Admin</h1>
+
+        <p class="sub">
+          Ringkasan pemakaian listrik seluruh ruangan, Oktober 2026
+        </p>
+
+        <!-- KARTU STATISTIK -->
+        <section class="stats" aria-label="Statistik Penggunaan">
+
+          <div class="stat">
+            <div class="icon yellow" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M13.5 2 5 13.5h6L10 22l9-12h-6.2L13.5 2Z"/>
+              </svg>
+            </div>
+
+            <div>
+              <div class="label">Total Pemakaian</div>
+              <div class="value">1.590 <small>kWh</small></div>
+              <div class="desc">Akumulasi dari seluruh ruangan</div>
+            </div>
+          </div>
+
+          <div class="stat">
+            <div class="icon blue" aria-hidden="true">
+              <svg class="i" viewBox="0 0 24 24">
+                <path d="M3.5 17a9 9 0 1 1 17 0"/>
+                <path d="M12 15l4-5"/>
+              </svg>
+            </div>
+
+            <div>
+              <div class="label">Total Rata-rata</div>
+              <div class="value">86%</div>
+              <div class="desc">Rata-rata pemakaian terhadap batas ruangan</div>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- GRAFIK BULANAN -->
+        <section class="card" aria-labelledby="grafik-heading">
+
+          <div class="card-head">
+            <h2 id="grafik-heading">Grafik Bulanan</h2>
+            <span>Pemakaian listrik per bulan (kWh)</span>
+          </div>
+
+          <div class="chart">
+
+            <div class="y-axis" aria-hidden="true">
+              <span>2.000</span>
+              <span>1.500</span>
+              <span>1.000</span>
+              <span>500</span>
+              <span>0</span>
+            </div>
+
+            <div class="plot">
+
+              <div class="gridline gridline-0"></div>
+              <div class="gridline gridline-25"></div>
+              <div class="gridline gridline-50"></div>
+              <div class="gridline gridline-75"></div>
+
+              <div class="bars">
+
+                <div class="bar-col">
+                  <div class="bar bar-56">
+                    <span class="val">1.120</span>
+                  </div>
+                </div>
+
+                <div class="bar-col">
+                  <div class="bar bar-62">
+                    <span class="val">1.240</span>
+                  </div>
+                </div>
+
+                <div class="bar-col">
+                  <div class="bar bar-70-5">
+                    <span class="val">1.410</span>
+                  </div>
+                </div>
+
+                <div class="bar-col">
+                  <div class="bar bar-67-5">
+                    <span class="val">1.350</span>
+                  </div>
+                </div>
+
+                <div class="bar-col">
+                  <div class="bar bar-76">
+                    <span class="val">1.520</span>
+                  </div>
+                </div>
+
+                <div class="bar-col">
+                  <div class="bar bar-64">
+                    <span class="val">1.280</span>
+                  </div>
+                </div>
+
+                <div class="bar-col">
+                  <div class="bar bar-73-5">
+                    <span class="val">1.470</span>
+                  </div>
+                </div>
+
+                <div class="bar-col">
+                  <div class="bar bar-69-5">
+                    <span class="val">1.390</span>
+                  </div>
+                </div>
+
+                <div class="bar-col">
+                  <div class="bar bar-78">
+                    <span class="val">1.560</span>
+                  </div>
+                </div>
+
+                <div class="bar-col">
+                  <div class="bar bar-79-5 current">
+                    <span class="val">1.590</span>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <div class="x-axis" aria-hidden="true">
+              <span>Jan</span>
+              <span>Feb</span>
+              <span>Mar</span>
+              <span>Apr</span>
+              <span>Mei</span>
+              <span>Jun</span>
+              <span>Jul</span>
+              <span>Agu</span>
+              <span>Sep</span>
+              <span>Okt</span>
+            </div>
+
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+</div>
+
+<!-- JAVASCRIPT -->
+<script>
+(function () {
+
+  const btn = document.getElementById('profileBtn');
+  const menu = document.getElementById('profileMenu');
+  const menuBtn = document.getElementById('menuBtn');
+  const sidebar = document.getElementById('sidebar');
+
+  // DROPDOWN PROFIL
+  function setOpen(open) {
+    menu.hidden = !open;
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+
+  btn.addEventListener('click', function (e) {
+    e.stopPropagation();
+    setOpen(menu.hidden);
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!menu.contains(e.target) && !btn.contains(e.target)) {
+      setOpen(false);
+    }
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') {
+      setOpen(false);
+    }
+  });
+
+  // SIDEBAR COLLAPSE
+  menuBtn.addEventListener('click', function () {
+    const isCollapsed = sidebar.classList.toggle('collapsed');
+
+    menuBtn.setAttribute(
+      'aria-expanded',
+      isCollapsed ? 'false' : 'true'
+    );
+  });
+
+})();
+</script>
+
+</body>
+</html>
