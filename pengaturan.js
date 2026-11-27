@@ -1,155 +1,156 @@
-// ===== HAMBURGER SIDEBAR =====
-const menuBtn = document.getElementById('menuBtn');
+(function () {
+    // ===== DROPDOWN PROFIL =====
+    var profileBtn = document.getElementById('profileBtn');
+    var profileMenu = document.getElementById('profileMenu');
 
-menuBtn.addEventListener('click', function () {
-    document.body.classList.toggle('nav-collapsed');
-});
+    profileBtn.addEventListener('click', function (event) {
+        event.stopPropagation();
+        profileMenu.hidden = !profileMenu.hidden;
+        profileBtn.setAttribute('aria-expanded', String(!profileMenu.hidden));
+    });
 
-// ===== DROPDOWN PROFIL =====
-const profileBtn = document.getElementById('profileBtn');
-const profileMenu = document.getElementById('profileMenu');
+    document.addEventListener('click', function (event) {
+        if (!profileMenu.contains(event.target) && !profileBtn.contains(event.target)) {
+            profileMenu.hidden = true;
+            profileBtn.setAttribute('aria-expanded', 'false');
+        }
+    });
 
-profileBtn.addEventListener('click', function (event) {
-    event.stopPropagation();
-    profileMenu.hidden = !profileMenu.hidden;
-});
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape') {
+            profileMenu.hidden = true;
+            profileBtn.setAttribute('aria-expanded', 'false');
+        }
+    });
 
-document.addEventListener('click', function (event) {
-    if (!profileBtn.contains(event.target) && !profileMenu.contains(event.target)) {
-        profileMenu.hidden = true;
+    // ===== HAMBURGER SIDEBAR =====
+    var menuBtn = document.getElementById('menuBtn');
+    var sidebar = document.getElementById('sidebar');
+
+    menuBtn.addEventListener('click', function () {
+        var collapsed = sidebar.classList.toggle('collapsed');
+        menuBtn.setAttribute('aria-expanded', String(!collapsed));
+    });
+
+    // ===== ELEMEN FORM =====
+    var settingsForm = document.getElementById('settingsForm');
+    var bahasa = document.getElementById('bahasa');
+    var sidebarOtomatis = document.getElementById('sidebarOtomatis');
+
+    // ===== MENERAPKAN PENGATURAN =====
+    function applySettings(data) {
+        document.body.classList.toggle('dark-theme', data.tema === 'gelap');
+
+        if (typeof terapkanBahasa === 'function') terapkanBahasa();
+
+        document.body.classList.remove('font-small', 'font-medium', 'font-large');
+
+        var fontClass = {
+            kecil: 'font-small',
+            sedang: 'font-medium',
+            besar: 'font-large'
+        };
+
+        document.body.classList.add(fontClass[data.huruf] || 'font-medium');
+
+        var isCollapsed = data.sidebarOtomatis === false;
+        sidebar.classList.toggle('collapsed', isCollapsed);
+        menuBtn.setAttribute('aria-expanded', isCollapsed ? 'false' : 'true');
     }
-});
 
-// ===== TOMBOL KELUAR (dengan konfirmasi) =====
-const tombolKeluar = document.getElementById('logout');
+    // ===== MEMUAT PENGATURAN =====
+    function loadSettings() {
+        var saved = localStorage.getItem('pengaturanPimpinan');
 
-tombolKeluar.addEventListener('click', function (event) {
-    event.preventDefault();
+        var defaultSettings = {
+            bahasa: 'id',
+            tema: 'terang',
+            huruf: 'sedang',
+            sidebarOtomatis: true
+        };
 
-
-});
-
-// ===== PENGATURAN OPERATOR =====
-const settingsForm = document.getElementById('settingsForm');
-const storageKey = 'pengaturanOperator';
-
-function applySettings(data) {
-
-    document.body.classList.toggle('dark-theme', data.tema === 'gelap');
-
-    if (typeof terapkanBahasa === 'function') terapkanBahasa();
-
-    document.body.classList.remove(
-        'font-small',
-        'font-medium',
-        'font-large'
-    );
-
-    const fontClass = {
-        kecil: 'font-small',
-        sedang: 'font-medium',
-        besar: 'font-large'
-    };
-
-    document.body.classList.add(
-        fontClass[data.huruf] || 'font-medium'
-    );
-
-    document.body.classList.toggle(
-        'nav-collapsed',
-        data.sidebarOtomatis === false
-    );
-
-}
-
-// ===== MEMUAT PENGATURAN =====
-function loadSettings() {
-
-    const defaults = {
-        bahasa: 'id',
-        tema: 'terang',
-        huruf: 'sedang',
-        sidebarOtomatis: true
-    };
-
-    let data = defaults;
-
-    try {
-
-        const saved = localStorage.getItem(storageKey);
+        var data = Object.assign({}, defaultSettings);
 
         if (saved) {
-            data = {
-                ...defaults,
-                ...JSON.parse(saved)
-            };
+            try {
+                data = Object.assign({}, defaultSettings, JSON.parse(saved));
+            } catch (error) {
+                console.error('Data pengaturan tidak valid:', error);
+            }
         }
 
-    } catch (error) {
-        console.error('Gagal membaca pengaturan:', error);
+        bahasa.value = data.bahasa;
+
+        var temaInput = document.querySelector(
+            'input[name="tema"][value="' + data.tema + '"]'
+        );
+        if (temaInput) temaInput.checked = true;
+
+        var hurufInput = document.querySelector(
+            'input[name="huruf"][value="' + data.huruf + '"]'
+        );
+        if (hurufInput) hurufInput.checked = true;
+
+        sidebarOtomatis.checked = data.sidebarOtomatis !== false;
+
+        applySettings(data);
     }
 
-    document.getElementById('bahasa').value = data.bahasa;
+    // ===== SIMPAN PENGATURAN =====
+    settingsForm.addEventListener('submit', function (event) {
+        event.preventDefault();
 
-    const temaInput = document.querySelector(
-        `input[name="tema"][value="${data.tema}"]`
-    );
+        var temaTerpilih = document.querySelector('input[name="tema"]:checked');
+        var hurufTerpilih = document.querySelector('input[name="huruf"]:checked');
 
-    if (temaInput) {
-        temaInput.checked = true;
+        var data = {
+            bahasa: bahasa.value,
+            tema: temaTerpilih ? temaTerpilih.value : 'terang',
+            huruf: hurufTerpilih ? hurufTerpilih.value : 'sedang',
+            sidebarOtomatis: sidebarOtomatis.checked
+        };
+
+        localStorage.setItem('pengaturanPimpinan', JSON.stringify(data));
+
+        applySettings(data);
+
+        alert('Pengaturan berhasil disimpan.');
+    });
+
+    // ===== TOMBOL BATAL =====
+    settingsForm.addEventListener('reset', function () {
+        setTimeout(function () {
+            loadSettings();
+        }, 0);
+    });
+
+        // ===== KONFIRMASI KELUAR =====
+    var logoutLink = document.getElementById('logout');
+
+    function prosesKeluar() {
+        sessionStorage.removeItem('pengguna');
+        sessionStorage.setItem('pesanFlash', 'Berhasil keluar.');
+        window.location.href = (typeof HALAMAN_LOGIN !== 'undefined')
+            ? HALAMAN_LOGIN
+            : '../auth/login.php';
     }
 
-    const hurufInput = document.querySelector(
-        `input[name="huruf"][value="${data.huruf}"]`
-    );
+    if (logoutLink) {
+        logoutLink.addEventListener('click', function (event) {
+            event.preventDefault();
 
-    if (hurufInput) {
-        hurufInput.checked = true;
+            // Pakai kotak konfirmasi yang sama dengan admin dan operator (dari components.js)
+            if (typeof tampilkanKonfirmasiKeluar === 'function') {
+                tampilkanKonfirmasiKeluar(prosesKeluar);
+            } else {
+                prosesKeluar();
+            }
+        });
     }
 
-    document.getElementById('sidebarOtomatis').checked =
-        data.sidebarOtomatis !== false;
-
-    applySettings(data);
-
-}
-
-// ===== SIMPAN PENGATURAN =====
-settingsForm.addEventListener('submit', function (event) {
-
-    event.preventDefault();
-
-    const temaChecked = document.querySelector(
-        'input[name="tema"]:checked'
-    );
-
-    const hurufChecked = document.querySelector(
-        'input[name="huruf"]:checked'
-    );
-
-    const data = {
-        bahasa: document.getElementById('bahasa').value,
-        tema: temaChecked ? temaChecked.value : 'terang',
-        huruf: hurufChecked ? hurufChecked.value : 'sedang',
-        sidebarOtomatis: document.getElementById('sidebarOtomatis').checked
-    };
-
-    localStorage.setItem(storageKey, JSON.stringify(data));
-
-    applySettings(data);
-
-    alert('Pengaturan Operator berhasil disimpan.');
-
-});
-
-// ===== TOMBOL BATAL =====
-settingsForm.addEventListener('reset', function () {
-    setTimeout(loadSettings, 0);
-});
-
-// ===== JALANKAN SAAT HALAMAN DIBUKA =====
-loadSettings();
-
+    // ===== JALANKAN SAAT HALAMAN DIBUKA =====
+    loadSettings();
+})();
 // ==========================================
 // SINKRONKAN TEMA (html mengikuti body)
 // ==========================================
