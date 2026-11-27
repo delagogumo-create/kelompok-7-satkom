@@ -1,139 +1,317 @@
 /* =================================
-   LAPORAN ADMIN - JAVASCRIPT (FIXED)
+   BAHASA
 ================================= */
 
 const isEn = (function () {
     var data = {};
     try {
-        data = JSON.parse(localStorage.getItem('pengaturanAdmin')) || {};
+        data = JSON.parse(localStorage.getItem('pengaturanPimpinan')) || {};
     } catch (e) {}
 
     var b = String(data.bahasa || data.language || data.lang || '').toLowerCase();
     return (b === 'en' || b.indexOf('eng') === 0 || b.indexOf('ing') === 0);
 })();
 
-// Kamus terjemahan utama
-const kamusLaporan = {
+const kamus = {
     'Laporan Konsumsi Listrik': 'Electricity Consumption Report',
-    'Rekapitulasi pemakaian listrik berdasarkan ruangan dan periode': 'Summary of electricity usage by room and period',
+    'Rekapitulasi pemakaian listrik berdasarkan ruangan dan periode':
+        'Summary of electricity usage by room and period',
     'Bulan': 'Month',
     'Tahun': 'Year',
-    'Status': 'Status',
     'Semua Bulan': 'All Months',
-    'Semua Tahun': 'All Years',
     'Semua Status': 'All Statuses',
-    'Semua': 'All',
+    'Okt': 'Oct',
+    'Sep': 'Sep',
+    'Agu': 'Agu',
+    'Des': 'Dec',
+    'Nama Ruangan': 'Room Name',
     'Tampilkan': 'Show',
     'Cetak PDF': 'Print PDF',
-    'Cari ruangan atau bulan...': 'Search room or month...',
-    'Nama Ruangan': 'Room Name',
-    'Total kWh': 'Total kWh',
-    
-    // Status
     'NORMAL': 'NORMAL',
     'BOROS': 'WASTEFUL',
     'HEMAT': 'SAVING',
-    'Normal': 'NORMAL',
-    'Boros': 'Wasteful',
-    'Hemat': 'Saving',
-    'Efficient': 'Efficient',
+    'Tidak ada data laporan yang sesuai.': 'No matching report data found.',
+    'Laporan berhasil ditampilkan.': 'Report displayed successfully.',
 
-    // Bulan
-    'Okt': 'Oct', 'Sep': 'Sep', 'Agu': 'Aug', 'Des': 'Dec',
-    'Jan': 'Jan', 'Feb': 'Feb', 'Mar': 'Mar', 'Apr': 'Apr',
-    'Mei': 'May', 'Jun': 'Jun', 'Jul': 'Jul', 'Nov': 'Nov',
+    // Nama ruangan
+    'R. Kelas A': 'Classroom A',
+    'L. Komputer': 'Computer Lab',
+    'R. Dosen': 'Lecturers Room',
+    'R. T.U': 'Admin Office',
 
-    // Navigasi
-    'Back': 'Back',
-    'Next': 'Next',
-    'Tidak ada data laporan yang ditemukan di database.': 'No report data found in the database.',
-
-    // Nama Ruangan
-    'R. Perpustakaan': 'Library Room',
-    'R. Lab Komputer 1': 'Computer Lab 1',
-    'R. Lab Komputer 2': 'Computer Lab 2',
-    'Lab Komputer 1': 'Computer Lab 1',
-    'Lab Komputer 2': 'Computer Lab 2',
-    'R. Lab Komputer': 'Computer Lab',
-
-    // Menu Sidebar & Header
-    'Dashboard': 'Dashboard',
-    'Data Ruangan': 'Room Data',
-    'Data Tagihan': 'Billing Data',
-    'Edit User': 'Edit User',
+    // Menu & header
     'Laporan': 'Reports',
+    'Analisis': 'Analysis',
     'Keluar': 'Logout',
-    'Admin': 'Admin',
+    'Pimpinan': 'Leader',
     'Edit Profil': 'Edit Profile',
     'Pengaturan': 'Settings'
 };
 
-// Fungsi penerjemah cerdas
-const T = text => {
-    if (!isEn || !text) return text;
-    let clean = String(text).trim();
-    if (kamusLaporan[clean]) return kamusLaporan[clean];
+const T = text => (isEn && kamus[text]) ? kamus[text] : text;
 
-    let lower = clean.toLowerCase();
-    if (lower.includes('lab komputer 1')) return clean.replace(/lab komputer 1/gi, 'Computer Lab 1').replace(/r\.\s*/gi, '');
-    if (lower.includes('lab komputer 2')) return clean.replace(/lab komputer 2/gi, 'Computer Lab 2').replace(/r\.\s*/gi, '');
-    if (lower.includes('perpustakaan')) return clean.replace(/perpustakaan/gi, 'Library').replace(/r\.\s*/gi, '');
-    if (lower.includes('semua tahun')) return 'All Years';
-    if (lower.includes('semua bulan')) return 'All Months';
-    if (lower.includes('semua status')) return 'All Statuses';
+/* =================================
+   DATA LAPORAN
+================================= */
 
-    return text;
+const sample = [
+    {id:1, month:'Okt', year:'2026', room:'R. Kelas A', kwh:800, status:'NORMAL'},
+    {id:2, month:'Okt', year:'2026', room:'L. Komputer', kwh:1200, status:'BOROS'},
+    {id:3, month:'Okt', year:'2026', room:'R. Dosen', kwh:150, status:'HEMAT'},
+    {id:4, month:'Okt', year:'2026', room:'R. T.U', kwh:200, status:'HEMAT'},
+    {id:5, month:'Sep', year:'2026', room:'R. Kelas A', kwh:750, status:'NORMAL'},
+    {id:6, month:'Sep', year:'2026', room:'L. Komputer', kwh:1100, status:'BOROS'},
+    {id:7, month:'Agu', year:'2026', room:'R. Dosen', kwh:180, status:'HEMAT'},
+    {id:8, month:'Agu', year:'2026', room:'R. T.U', kwh:250, status:'HEMAT'}
+];
+
+let reports;
+
+try {
+    reports = JSON.parse(
+        localStorage.getItem('laporan-pimpinan-konsumsi-listrik')
+    ) || sample;
+} catch (error) {
+    reports = sample;
+}
+
+let page = 1;
+const perPage = 4;
+
+// Penanda apakah tombol Tampilkan sudah pernah diklik
+let isFiltered = false;
+let activeFilter = {
+    month: '',
+    year: '',
+    status: ''
 };
 
-// Fungsi pemindai untuk menerjemahkan elemen teks halaman secara real-time
-function translateDOM() {
-    if (!isEn) return;
-    document.querySelectorAll('h1, h2, h3, h4, label, button, option, th, td, span, a, p').forEach(el => {
-        if (el.childNodes.length === 1 && el.childNodes[0].nodeType === Node.TEXT_NODE) {
-            let txt = el.textContent.trim();
-            let translated = T(txt);
-            if (translated !== txt) {
-                el.textContent = translated;
-            }
-        } else if (el.tagName === 'OPTION') {
-            let txt = el.textContent.trim();
-            let translated = T(txt);
-            if (translated !== txt) {
-                el.textContent = translated;
-            }
+const $ = id => document.getElementById(id);
+
+const formatNumber = number =>
+    Number(number).toLocaleString(isEn ? 'en-US' : 'id-ID');
+
+/* =================================
+   NOTIFIKASI
+================================= */
+
+function notify(message) {
+    const notice = $('notice');
+
+    if (!notice) return;
+
+    notice.textContent = message;
+    notice.style.display = 'block';
+
+    clearTimeout(window.noticeTimer);
+
+    window.noticeTimer = setTimeout(() => {
+        notice.style.display = 'none';
+    }, 2500);
+}
+
+/* =================================
+   FILTER DATA
+================================= */
+
+function filteredReports() {
+    const search = $('search').value.trim().toLowerCase();
+
+    return reports.filter(report => {
+        // Jika tombol Tampilkan belum pernah diklik, tampilkan semua data secara default
+        if (!isFiltered) {
+            return true;
+        }
+
+        const matchMonth = !activeFilter.month || report.month === activeFilter.month;
+        const matchYear = !activeFilter.year || report.year === activeFilter.year;
+        const matchStatus = !activeFilter.status || report.status.toUpperCase() === activeFilter.status.toUpperCase();
+        
+        const rowText = `${report.room} ${T(report.room)} ${report.month} ${T(report.month)} ${report.year} ${report.kwh} ${report.status} ${T(report.status)}`.toLowerCase();
+        const matchSearch = rowText.includes(search);
+
+        return matchMonth && matchYear && matchStatus && matchSearch;
+    });
+}
+
+/* =================================
+   TAMPILKAN DATA
+================================= */
+
+function render() {
+    const list = filteredReports();
+
+    const totalPages = Math.max(
+        1,
+        Math.ceil(list.length / perPage)
+    );
+
+    if (page > totalPages) {
+        page = totalPages;
+    }
+
+    const start = (page - 1) * perPage;
+
+    const displayed = list.slice(
+        start,
+        start + perPage
+    );
+
+    if (displayed.length > 0) {
+
+        $('rows').innerHTML = displayed.map((report, index) => `
+            <tr>
+                <td>${start + index + 1}</td>
+                <td>${T(report.room)}</td>
+                <td>${formatNumber(report.kwh)} kWh</td>
+                <td>
+                    <span class="status ${report.status.toLowerCase()}">
+                        ${T(report.status)}
+                    </span>
+                </td>
+            </tr>
+        `).join('');
+
+    } else {
+
+        $('rows').innerHTML = `
+            <tr>
+                <td colspan="4" class="empty">
+                    ${T('Tidak ada data laporan yang sesuai.')}
+                </td>
+            </tr>
+        `;
+
+    }
+
+    $('pageCount').textContent =
+        `${page} / ${totalPages}`;
+
+    $('back').disabled = page <= 1;
+    $('next').disabled = page >= totalPages;
+}
+
+/* =================================
+   TOMBOL TAMPILKAN
+================================= */
+
+$('showBtn').addEventListener('click', () => {
+    isFiltered = true; // Tandai bahwa tombol Tampilkan sudah diklik
+    activeFilter.month = $('month').value;
+    activeFilter.year = $('year').value;
+    activeFilter.status = $('statusFilter').value;
+
+    page = 1;
+    render();
+
+    var pesan = T('Laporan berhasil ditampilkan.');
+
+    if (typeof tampilkanPesanSimpan === 'function') {
+        tampilkanPesanSimpan(pesan);
+    } else {
+        notify(pesan);
+    }
+});
+
+/* =================================
+   PENCARIAN
+================================= */
+
+$('search').addEventListener('input', () => {
+    page = 1;
+    render();
+});
+
+/* =================================
+   PAGINATION
+================================= */
+
+$('back').addEventListener('click', () => {
+    if (page > 1) {
+        page--;
+        render();
+    }
+});
+
+$('next').addEventListener('click', () => {
+    const totalPages = Math.max(
+        1,
+        Math.ceil(filteredReports().length / perPage)
+    );
+
+    if (page < totalPages) {
+        page++;
+        render();
+    }
+});
+
+/* =================================
+   CETAK PDF
+================================= */
+
+$('pdfBtn').addEventListener('click', () => {
+    window.print();
+});
+
+/* =================================
+   HAMBURGER SIDEBAR
+================================= */
+
+(function () {
+    var menuBtn = document.getElementById('menuBtn');
+    var sidebar = document.getElementById('sidebar');
+
+    if (!menuBtn || !sidebar) return;
+
+    menuBtn.addEventListener('click', function (event) {
+        event.stopImmediatePropagation();
+        event.preventDefault();
+
+        sidebar.classList.toggle('collapsed');
+
+        menuBtn.setAttribute(
+            'aria-expanded',
+            sidebar.classList.contains('collapsed') ? 'false' : 'true'
+        );
+    }, true);
+})();
+
+/* =================================
+   DROPDOWN PROFIL
+================================= */
+
+(function () {
+    var profileBtn = document.getElementById('profileBtn');
+    var profileMenu = document.getElementById('profileMenu');
+
+    if (!profileBtn || !profileMenu) return;
+
+    function setProfileMenu(open) {
+        profileMenu.hidden = !open;
+        profileBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+
+    profileBtn.addEventListener('click', function (event) {
+        event.stopImmediatePropagation();
+        event.stopPropagation();
+        setProfileMenu(profileMenu.hidden);
+    }, true);
+
+    document.addEventListener('click', function (event) {
+        if (!profileMenu.contains(event.target) && !profileBtn.contains(event.target)) {
+            setProfileMenu(false);
         }
     });
 
-    const searchInput = document.querySelector('input[name="cari"]');
-    if (searchInput && searchInput.placeholder) {
-        searchInput.placeholder = T(searchInput.placeholder);
-    }
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-    // Terapkan Tema dan Bahasa dari LocalStorage saat halaman dimuat
-    try {
-        let settings = JSON.parse(localStorage.getItem('pengaturanAdmin')) || {};
-        if (settings.tema === 'gelap') {
-            document.documentElement.classList.add('dark-theme');
-            document.body.classList.add('dark-theme');
-        } else {
-            document.documentElement.classList.remove('dark-theme');
-            document.body.classList.remove('dark-theme');
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape') {
+            setProfileMenu(false);
         }
-    } catch (e) {}
+    });
+})();
 
-    if (isEn) {
-        document.documentElement.lang = 'en';
-        document.title = 'Reports (Admin) — Electricity Consumption System';
-        translateDOM();
-    }
+/* =================================
+   DATA AWAL
+================================= */
 
-    // Observer untuk mendeteksi perubahan elemen secara dinamis
-    if (isEn) {
-        const observer = new MutationObserver(() => {
-            translateDOM();
-        });
-        observer.observe(document.body, { childList: true, subtree: true });
-    }
-});
+render();
