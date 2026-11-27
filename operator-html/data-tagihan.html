@@ -1,0 +1,497 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistem Konsumsi Listrik — Data Tagihan</title>
+
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23fbbf24'><path d='M13.5 2 5 13.5h6L10 22l9-12h-6.2L13.5 2Z'/></svg>">
+
+  <link rel="stylesheet" href="../../css/global.css">
+  <link rel="stylesheet" href="../../css/components.css">
+</head>
+
+<body class="dashboard - layout page-data-tagihan">
+
+<div class="window" id="browser">
+  <div class="titlebar">
+    <div class="dots"><span></span><span></span><span></span></div>
+    <span class="close">
+      <svg class="i" viewBox="0 0 24 24">
+        <path d="M6 6l12 12M18 6L6 18"/>
+      </svg>
+    </span>
+  </div>
+
+  <div class="app">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="logo">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M13.5 2 5 13.5h6L10 22l9-12h-6.2L13.5 2Z"/>
+          </svg>
+        </div>
+        <span>Sistem Konsumsi<br>Listrik</span>
+      </div>
+
+      <nav class="nav">
+        <button class="navitem" data-page="Dashboard">
+          <svg class="i" viewBox="0 0 24 24">
+            <rect x="3" y="3" width="7" height="7" rx="2.5"/>
+            <rect x="14" y="3" width="7" height="7" rx="2.5"/>
+            <rect x="3" y="14" width="7" height="7" rx="2.5"/>
+            <rect x="14" y="14" width="7" height="7" rx="2.5"/>
+          </svg>
+          <span>Dashboard</span>
+        </button>
+
+        <button class="navitem" data-page="Data Ruangan">
+          <svg class="i" viewBox="0 0 24 24">
+            <path d="M4 21V9M9 21V4M14 21V8M19 21V12"/>
+            <path d="M2 21h20"/>
+          </svg>
+          <span>Data Ruangan</span>
+        </button>
+
+        <button class="navitem active" data-page="Data Tagihan">
+          <svg class="i" viewBox="0 0 24 24">
+            <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Z"/>
+            <path d="M14 3v5h5"/>
+            <path d="M9 13h6M9 17h4"/>
+          </svg>
+          <span>Data Tagihan</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="logout" id="logout" role="button" tabindex="0">
+          <svg class="i" viewBox="0 0 24 24">
+            <path d="M10 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h4"/>
+            <path d="M14 8l4 4-4 4"/>
+            <path d="M18 12H8"/>
+          </svg>
+          <span>Keluar</span>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header>
+        <button class="hamb" id="hambBtn" type="button" aria-label="Menu">
+          <svg class="i" viewBox="0 0 24 24">
+            <path d="M6 8h12M6 12h8M6 16h12"/>
+          </svg>
+        </button>
+
+        <div class="profile-wrap">
+          <button class="profile" id="profileBtn" type="button"
+            aria-haspopup="true" aria-expanded="false">
+            <span>Operator</span>
+            <span class="avatar">
+              <svg class="i" viewBox="0 0 24 24">
+                <circle cx="12" cy="8" r="4"/>
+                <path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/>
+              </svg>
+            </span>
+            <span class="caret">⌄</span>
+          </button>
+
+          <div class="dropdown" id="profileMenu" role="menu" hidden>
+            <a href="edit-profil.html" role="menuitem">
+              <svg class="i" viewBox="0 0 24 24">
+                <circle cx="10" cy="8" r="4"/>
+                <path d="M3 21c0-4 3-6.5 7-6.5"/>
+                <path d="M13 21h3.5L21 16.5a1.8 1.8 0 0 0-2.5-2.5L13 19.5V21Z"/>
+              </svg>
+              Edit User
+            </a>
+
+            <a href="#" role="menuitem">
+              <svg class="i" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="3"/>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l-.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l-.06-.06a2 2 0 1 1 2.83 2.83l-.06-.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+              </svg>
+              Pengaturan
+            </a>
+          </div>
+        </div>
+      </header>
+
+      <section class="content">
+        <form id="filterForm">
+          <div class="filters">
+            <div>
+              <label for="roomFilter">Pilih Ruangan</label>
+              <select id="roomFilter">
+                <option value="">Semua Ruangan</option>
+                <option>R. Kelas A</option>
+                <option>L. Komputer</option>
+                <option>R. Dosen B</option>
+                <option>R. T.U</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="monthFilter">Bulan</label>
+              <select id="monthFilter">
+                <option value="">Semua Bulan</option>
+                <option>Okt-2026</option>
+                <option>Sep-2026</option>
+                <option>Agu-2026</option>
+                <option>Jul-2026</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="usageFilter">Pemakaian</label>
+              <select id="usageFilter">
+                <option value="">Semua Pemakaian</option>
+                <option value="low">Di bawah 500 kWh</option>
+                <option value="medium">500–999 kWh</option>
+                <option value="high">1000 kWh ke atas</option>
+              </select>
+            </div>
+          </div>
+
+          <button class="primary filter-submit" type="submit">
+            SIMPAN DAN ANALISIS
+          </button>
+        </form>
+
+        <div class="tablewrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Tanggal Bulan</th>
+                <th>N. Ruangan</th>
+                <th>Pemakaian</th>
+                <th>STATUS</th>
+                <th>AKSI</th>
+              </tr>
+            </thead>
+            <tbody id="billRows"></tbody>
+          </table>
+        </div>
+
+        <div class="footer">
+          <button class="pager" id="backBtn">Back</button>
+          <span class="pagecount" id="pageCount">1 / 3</span>
+          <button class="pager" id="nextBtn">Next</button>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<!-- Modal Edit -->
+<div class="modalback" id="modalBack" role="dialog"
+  aria-modal="true" aria-labelledby="modalTitle">
+
+  <form class="modal" id="billForm">
+    <h2 id="modalTitle">Edit Data Tagihan</h2>
+
+    <div class="field">
+      <label for="billMonth">Tanggal Bulan</label>
+      <select id="billMonth" required>
+        <option>Okt-2026</option>
+        <option>Sep-2026</option>
+        <option>Agu-2026</option>
+        <option>Jul-2026</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="billRoom">Nama Ruangan</label>
+      <select id="billRoom" required>
+        <option>R. Kelas A</option>
+        <option>L. Komputer</option>
+        <option>R. Dosen B</option>
+        <option>R. T.U</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="billUsage">Pemakaian (kWh)</label>
+      <input id="billUsage" type="number" min="0" required>
+    </div>
+
+    <div class="field">
+      <label for="billStatus">Status</label>
+      <select id="billStatus">
+        <option>Normal</option>
+        <option>Boros</option>
+        <option>Hemat</option>
+      </select>
+    </div>
+
+    <div class="modalactions">
+      <button type="button" class="secondary" id="cancelBtn">
+        Batal
+      </button>
+      <button class="save" type="submit">
+        Simpan
+      </button>
+    </div>
+  </form>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const bills = [
+  {month:"Okt-2026",room:"R. Kelas A",usage:800,status:"Normal"},
+  {month:"Sep-2026",room:"L. Komputer",usage:1200,status:"Boros"},
+  {month:"Agu-2026",room:"R. Dosen B",usage:450,status:"Hemat"},
+  {month:"Jul-2026",room:"R. T.U",usage:620,status:"Normal"},
+  {month:"Jul-2026",room:"R. Kelas A",usage:980,status:"Normal"},
+  {month:"Agu-2026",room:"L. Komputer",usage:1100,status:"Boros"},
+  {month:"Sep-2026",room:"R. Dosen B",usage:540,status:"Normal"},
+  {month:"Okt-2026",room:"R. T.U",usage:300,status:"Hemat"},
+  {month:"Agu-2026",room:"R. Kelas A",usage:720,status:"Normal"}
+];
+
+const rows = document.getElementById('billRows');
+
+let page = 0;
+const pageSize = 3;
+let filteredBills = [...bills];
+let editIndex = null;
+
+function notify(msg) {
+  const t = document.getElementById('toast');
+  if (!t) return;
+
+  t.textContent = msg;
+  t.style.display = 'block';
+
+  clearTimeout(window.toastTimer);
+  window.toastTimer = setTimeout(() => {
+    t.style.display = 'none';
+  }, 2400);
+}
+
+function statusClass(s) {
+  return s === 'Normal' ? 'normal' :
+         s === 'Boros' ? 'boros' : 'hemat';
+}
+
+function render() {
+  const start = page * pageSize;
+  const shown = filteredBills.slice(start, start + pageSize);
+
+  rows.innerHTML = '';
+
+  if (!shown.length) {
+    rows.innerHTML = `
+      <tr>
+        <td colspan="5" class="empty-row">
+          Tidak ada data tagihan yang cocok.
+        </td>
+      </tr>
+    `;
+  }
+
+  shown.forEach(b => {
+    const realIndex = bills.indexOf(b);
+    const tr = document.createElement('tr');
+
+    tr.innerHTML = `
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>
+        <span class="status ${statusClass(b.status)}"></span>
+      </td>
+      <td>
+        <div class="actions">
+          <button class="iconbtn edit" title="Edit" aria-label="Edit">
+            <svg class="i" viewBox="0 0 24 24">
+              <path d="M4 20h4L19 9a2.1 2.1 0 0 0-3-3L5 17v3Z"/>
+              <path d="M14 7l3 3"/>
+            </svg>
+          </button>
+
+          <button class="iconbtn delete" title="Hapus" aria-label="Hapus">
+            <svg class="i" viewBox="0 0 24 24">
+              <path d="M3 6h18"/>
+              <path d="M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2"/>
+              <path d="M5 6l1 14a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-14"/>
+              <path d="M10 11v6M14 11v6"/>
+            </svg>
+          </button>
+        </div>
+      </td>
+    `;
+
+    tr.children[0].textContent = b.month;
+    tr.children[1].textContent = b.room;
+    tr.children[2].textContent = b.usage + ' kWh';
+    tr.querySelector('.status').textContent = b.status;
+
+    tr.querySelector('.edit').addEventListener('click', () => {
+      openEdit(realIndex);
+    });
+
+    tr.querySelector('.delete').addEventListener('click', () => {
+      if (confirm(`Hapus data tagihan ${b.room} (${b.month})?`)) {
+        bills.splice(realIndex, 1);
+        applyFilters();
+        notify('Data tagihan berhasil dihapus.');
+      }
+    });
+
+    rows.appendChild(tr);
+  });
+
+  const total = Math.max(1, Math.ceil(filteredBills.length / pageSize));
+
+  document.getElementById('pageCount').textContent =
+    (page + 1) + ' / ' + total;
+
+  document.getElementById('backBtn').disabled = page === 0;
+  document.getElementById('nextBtn').disabled = page >= total - 1;
+}
+
+function applyFilters() {
+  const room = document.getElementById('roomFilter').value;
+  const month = document.getElementById('monthFilter').value;
+  const usage = document.getElementById('usageFilter').value;
+
+  filteredBills = bills.filter(b =>
+    (!room || b.room === room) &&
+    (!month || b.month === month) &&
+    (!usage ||
+      (usage === 'low' ? b.usage < 500 :
+       usage === 'medium' ? b.usage >= 500 && b.usage < 1000 :
+       b.usage >= 1000))
+  );
+
+  page = 0;
+  render();
+}
+
+function openEdit(i) {
+  editIndex = i;
+
+  const b = bills[i];
+
+  document.getElementById('billMonth').value = b.month;
+  document.getElementById('billRoom').value = b.room;
+  document.getElementById('billUsage').value = b.usage;
+  document.getElementById('billStatus').value = b.status;
+
+  document.getElementById('modalBack').style.display = 'flex';
+}
+
+function closeModal() {
+  document.getElementById('modalBack').style.display = 'none';
+  editIndex = null;
+}
+
+document.getElementById('filterForm').addEventListener('submit', e => {
+  e.preventDefault();
+  applyFilters();
+  notify('Filter diterapkan dan data dianalisis.');
+});
+
+document.getElementById('billForm').addEventListener('submit', e => {
+  e.preventDefault();
+
+  if (editIndex === null) return;
+
+  bills[editIndex] = {
+    month: document.getElementById('billMonth').value,
+    room: document.getElementById('billRoom').value,
+    usage: Number(document.getElementById('billUsage').value),
+    status: document.getElementById('billStatus').value
+  };
+
+  closeModal();
+  applyFilters();
+  notify('Data tagihan berhasil diperbarui.');
+});
+
+document.getElementById('cancelBtn').addEventListener('click', closeModal);
+
+document.getElementById('modalBack').addEventListener('click', e => {
+  if (e.target.id === 'modalBack') closeModal();
+});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal();
+});
+
+document.getElementById('backBtn').addEventListener('click', () => {
+  if (page > 0) {
+    page--;
+    render();
+  }
+});
+
+document.getElementById('nextBtn').addEventListener('click', () => {
+  if (page < Math.ceil(filteredBills.length / pageSize) - 1) {
+    page++;
+    render();
+  }
+});
+
+document.querySelectorAll('.navitem').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.navitem').forEach(b => {
+      b.classList.remove('active');
+    });
+
+    btn.classList.add('active');
+
+    if (btn.dataset.page !== 'Data Tagihan') {
+      notify(`Menu "${btn.dataset.page}" dipilih.`);
+    }
+  });
+});
+
+document.getElementById('logout').addEventListener('click', () => {
+  notify('Ini adalah demo. Fungsi keluar belum terhubung.');
+});
+
+render();
+
+// Dropdown Profil dan Hamburger Toggle
+(function() {
+  const btn = document.getElementById('profileBtn');
+  const menu = document.getElementById('profileMenu');
+  const sidebar = document.getElementById('sidebar');
+  const hambBtn = document.getElementById('hambBtn');
+
+  function setOpen(o) {
+    menu.hidden = !o;
+    btn.setAttribute('aria-expanded', o ? 'true' : 'false');
+  }
+
+  btn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    setOpen(menu.hidden);
+  });
+
+  document.addEventListener('click', function(e) {
+    if (!btn.contains(e.target)) {
+      setOpen(false);
+    }
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      setOpen(false);
+    }
+  });
+
+  if (hambBtn) {
+    hambBtn.addEventListener('click', function() {
+      sidebar.classList.toggle('collapsed');
+    });
+  }
+})();
+</script>
+
+</body>
+</html>
