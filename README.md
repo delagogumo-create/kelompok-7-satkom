@@ -1,1 +1,1 @@
-# kelompok-7-satkom
+# Tim 20-satkom
