@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login - Sistem Konsumsi Listrik</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23fbbf24'><path d='M13.5 2 5 13.5h6L10 22l9-12h-6.2L13.5 2Z'/></svg>">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/auth/login.css">
+    <!-- JAVASCRIPT -->
+<script src="../../js/auth/login.js"></script>
+
+</head>
+<body>
+
+    <div class="wrapper">
+
+        <main class="card">
+
+            <!-- BRAND -->
+            <div class="brand">
+
+                <div class="logo">
+                    <img src="../../assets/images/logo-unkhair.png" alt="Logo UNKHAIR">
+                </div>
+
+                <h1>Sistem Konsumsi Listrik</h1>
+
+            </div>
+
+            <!-- FORM LOGIN -->
+            <form id="loginForm">
+
+                <!-- USERNAME -->
+                <div class="field">
+
+                    <div class="label-row">
+                        <label for="username">Username</label>
+                    </div>
+
+                    <div class="input-wrap">
+
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                            <circle cx="12" cy="7" r="4"/>
+                        </svg>
+
+                        <input
+                            type="text"
+                            id="username"
+                            name="username"
+                            placeholder="Masukkan username"
+                        >
+
+                    </div>
+
+                    <small class="error-text" id="errorUsername"></small>
+
+                </div>
+
+                <!-- PASSWORD -->
+                <div class="field">
+
+                    <div class="label-row">
+
+                        <label for="password">Kata Sandi</label>
+
+                        <a href="lupa-password.html" class="forgot">
+                            Lupa kata sandi?
+                        </a>
+
+                    </div>
+
+                    <div class="input-wrap">
+
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <rect x="3" y="11" width="18" height="11" rx="2"/>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                        </svg>
+
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Masukkan kata sandi"
+                        >
+
+                        <!-- SATU ICON MATA -->
+                        <button
+                            type="button"
+                            class="toggle-pw"
+                            id="togglePassword"
+                            aria-label="Tampilkan kata sandi"
+                        >
+
+                            <svg class="eye-icon" viewBox="0 0 24 24">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+
+                                             
+                        </button>
+
+                    </div>
+
+                    <small class="error-text" id="errorPassword"></small>
+
+                </div>
+
+                 <small class="error-text" id="errorUmum"></small>
+
+                <!-- TOMBOL MASUK -->
+                <button type="submit" class="btn">
+                    MASUK
+                </button>
+
+            </form>
+
+        </main>
+
+        <!-- FOOTER -->
+       
+
+<div class="preview">
+
+    <span>Perlu bantuan?</span>
+
+    <a href="#">Hubungi Kami</a>
+
+</div>
+
+</div>
+
+
+</div>
+
+
+
+
+</body>
+</html>
