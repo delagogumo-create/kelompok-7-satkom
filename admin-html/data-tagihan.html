@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Data Tagihan - Sistem Konsumsi Listrik</title>
+
+  <!-- FONT -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- IKON WEBSITE -->
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23fbbf24'><path d='M13.5 2 5 13.5h6L10 22l9-12h-6.2L13.5 2Z'/></svg>">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="../../css/global.css">
+  <link rel="stylesheet" href="../../css/components.css">
+
+  <!-- CSS TAMBAHAN -->
+  <style>
+
+    /* SIDEBAR NORMAL */
+    .sidebar {
+      width: 230px;
+      min-width: 230px;
+      flex-shrink: 0;
+      overflow: hidden;
+
+      transition:
+        width 0.3s ease,
+        min-width 0.3s ease,
+        padding 0.3s ease;
+    }
+
+    /* TULISAN MENU DAN LOGO */
+    .sidebar .navitem span,
+    .sidebar .logout span,
+    .sidebar .brand-text {
+      display: inline-block;
+      white-space: nowrap;
+      overflow: hidden;
+      max-width: 160px;
+      opacity: 1;
+
+      transition:
+        max-width 0.3s ease,
+        opacity 0.2s ease;
+    }
+
+    /* SIDEBAR DIPERKECIL */
+    .sidebar.collapsed {
+      width: 75px;
+      min-width: 75px;
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+
+    /* SEMBUNYIKAN TULISAN */
+    .sidebar.collapsed .navitem span,
+    .sidebar.collapsed .logout span,
+    .sidebar.collapsed .brand-text {
+      max-width: 0;
+      opacity: 0;
+    }
+
+    /* IKON MENU DI TENGAH */
+    .sidebar.collapsed .navitem,
+    .sidebar.collapsed .logout {
+      justify-content: center;
+      gap: 0;
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    /* LOGO DI TENGAH */
+    .sidebar.collapsed .brand {
+      justify-content: center;
+    }
+
+    /* IKON TIDAK MENGECIL */
+    .sidebar .navitem .i,
+    .sidebar .logout .i {
+      flex-shrink: 0;
+    }
+
+    /* AREA UTAMA */
+    .main {
+      flex: 1;
+      min-width: 0;
+    }
+
+    /* TOMBOL HAMBURGER */
+    .hamb {
+      width: 38px;
+      height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--blue);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+      transition: background 0.2s ease;
+    }
+
+    .hamb:hover {
+      background: var(--navy-hover);
+    }
+
+    .hamb .i {
+      width: 22px;
+      height: 22px;
+      stroke: white;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+    }
+
+    /* DROPDOWN PROFIL */
+    .dropdown[hidden] {
+      display: none !important;
+    }
+
+    /* =================================
+       ANIMASI IKON PANAH FILTER
+    ================================= */
+
+    .select-wrapper {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .select-wrapper select {
+      appearance: none;
+      -webkit-appearance: none;
+      padding-right: 36px;
+      cursor: pointer;
+    }
+
+    .select-wrapper .select-icon {
+      position: absolute;
+      right: 12px;
+      width: 16px;
+      height: 16px;
+      color: #64748b;
+      pointer-events: none;
+
+      transition: transform 0.25s ease;
+    }
+
+    /* PANAH BERPUTAR 180 DERAJAT */
+    .select-wrapper.is-open .select-icon {
+      transform: rotate(180deg);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .sidebar.collapsed {
+        width: 65px;
+        min-width: 65px;
+      }
+    }
+
+    /* PENGATURAN ANIMASI */
+    @media (prefers-reduced-motion: reduce) {
+      .select-wrapper .select-icon {
+        transition: none;
+      }
+    }
+
+  </style>
+</head>
+
+<body>
+
+<div class="window">
+  <div class="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+
+      <!-- LOGO -->
+      <div class="brand">
+        <div class="logo">
+          <svg viewBox="0 0 24 24">
+            <path d="M13.5 2 5 13.5h6L10 22l9-12h-6.2L13.5 2Z"/>
+          </svg>
+        </div>
+
+        <span class="brand-text">
+          Sistem Konsumsi<br>Listrik
+        </span>
+      </div>
+
+      <!-- MENU NAVIGASI -->
+      <nav class="nav">
+
+        <a href="dashboard.html" class="navitem" title="Dashboard">
+          <svg class="i" viewBox="0 0 24 24">
+            <rect x="3" y="3" width="7" height="7" rx="2"/>
+            <rect x="14" y="3" width="7" height="7" rx="2"/>
+            <rect x="3" y="14" width="7" height="7" rx="2"/>
+            <rect x="14" y="14" width="7" height="7" rx="2"/>
+          </svg>
+          <span>Dashboard</span>
+        </a>
+
+        <a href="data-ruangan.html" class="navitem" title="Data Ruangan">
+          <svg class="i" viewBox="0 0 24 24">
+            <path d="M4 21V9M9 21V4M14 21V8M19 21V12"/>
+            <path d="M2 21h20"/>
+          </svg>
+          <span>Data Ruangan</span>
+        </a>
+
+        <a href="data-tagihan.html" class="navitem active" title="Data Tagihan">
+          <svg class="i" viewBox="0 0 24 24">
+            <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Z"/>
+            <path d="M14 3v5h5M9 13h6M9 17h4"/>
+          </svg>
+          <span>Data Tagihan</span>
+        </a>
+
+        <a href="edit-profil.html" class="navitem" title="Edit Profil">
+          <svg class="i" viewBox="0 0 24 24">
+            <circle cx="12" cy="8" r="4"/>
+            <path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/>
+          </svg>
+          <span>Edit Profil</span>
+        </a>
+
+        <a href="laporan.html" class="navitem" title="Laporan">
+          <svg class="i" viewBox="0 0 24 24">
+            <path d="M3 5.5C5.5 4 9 4 12 6c3-2 6.5-2 9-.5V19c-2.5-1.5-6-1.5-9 .5-3-2-6.5-2-9-.5V5.5Z"/>
+            <path d="M12 6v13.5"/>
+          </svg>
+          <span>Laporan</span>
+        </a>
+
+      </nav>
+
+      <!-- KELUAR -->
+      <div class="sidebar-bottom">
+
+        <a href="#" class="logout" id="logout" title="Keluar">
+          <svg class="i" viewBox="0 0 24 24">
+            <path d="M10 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h4"/>
+            <path d="M14 8l4 4-4 4"/>
+            <path d="M18 12H8"/>
+          </svg>
+          <span>Keluar</span>
+        </a>
+
+      </div>
+
+    </aside>
+
+    <!-- AREA UTAMA -->
+    <div class="main">
+
+      <!-- HEADER -->
+      <header class="topbar">
+
+        <!-- HAMBURGER -->
+        <button class="hamb" id="menuBtn" type="button"
+          aria-label="Buka atau tutup menu navigasi"
+          aria-expanded="true">
+
+          <svg class="i" viewBox="0 0 24 24">
+            <path d="M4 7h16M4 12h10M4 17h16"/>
+          </svg>
+
+        </button>
+
+        <!-- PROFIL ADMIN -->
+        <div class="profile-wrap">
+
+          <button class="profile" id="profileBtn" type="button"
+            aria-haspopup="true" aria-expanded="false">
+
+            Admin
+
+            <span class="avatar">
+              <svg class="i" viewBox="0 0 24 24">
+                <circle cx="12" cy="8" r="4"/>
+                <path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/>
+              </svg>
+            </span>
+
+            <span class="caret">⌄</span>
+
+          </button>
+
+          <!-- DROPDOWN PROFIL -->
+          <div class="dropdown" id="profileMenu" role="menu" hidden>
+
+            <a href="edit-profil.html" role="menuitem">
+              <svg class="i" viewBox="0 0 24 24">
+                <circle cx="10" cy="8" r="4"/>
+                <path d="M3 21c0-4 3-6.5 7-6.5"/>
+                <path d="M13 21h3.5L21 16.5a1.8 1.8 0 0 0-2.5-2.5L13 19.5V21Z"/>
+              </svg>
+              Edit Profil
+            </a>
+
+            <a href="#" role="menuitem">
+              <svg class="i" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="3"/>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l-.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06-.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+              </svg>
+              Pengaturan
+            </a>
+
+          </div>
+
+        </div>
+
+      </header>
+
+      <!-- KONTEN -->
+      <main class="content">
+
+
+<!-- FILTER -->
+<form id="filterForm">
+
+    <div class="filters">
+
+        <!-- FILTER RUANGAN -->
+        <div class="filter-item">
+
+            <label for="roomFilter">Pilih Ruangan</label>
+
+            <div class="select-wrapper">
+
+                <select id="roomFilter">
+                    <option value="">Semua Ruangan</option>
+                    <option value="R. Kelas A">R. Kelas A</option>
+                    <option value="L. Komputer">L. Komputer</option>
+                    <option value="R. Seminar B">R. Seminar B</option>
+                    <option value="R. T.U">R. T.U</option>
+                </select>
+
+                <svg class="select-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="m6 9 6 6 6-6"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"/>
+                </svg>
+
+            </div>
+        </div>
+
+        <!-- FILTER BULAN -->
+        <div class="filter-item">
+
+            <label for="monthFilter">Bulan</label>
+
+            <div class="select-wrapper">
+
+                <select id="monthFilter">
+                    <option value="">Semua Bulan</option>
+                    <option value="Okt-2026">Okt-2026</option>
+                    <option value="Nov-2026">Nov-2026</option>
+                    <option value="Sep-2026">Sep-2026</option>
+                    <option value="Agu-2026">Agu-2026</option>
+                </select>
+
+                <svg class="select-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="m6 9 6 6 6-6"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"/>
+                </svg>
+
+            </div>
+        </div>
+
+        <!-- FILTER PEMAKAIAN -->
+        <div class="filter-item">
+
+            <label for="usageFilter">Pemakaian</label>
+
+            <div class="select-wrapper">
+
+                <select id="usageFilter">
+                    <option value="">Semua Pemakaian</option>
+                    <option value="low">Di bawah 500</option>
+                    <option value="medium">500–999</option>
+                    <option value="high">1.000 ke atas</option>
+                </select>
+
+                <svg class="select-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="m6 9 6 6 6-6"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"/>
+                </svg>
+
+            </div>
+        </div>
+
+    </div>
+
+    <button class="btn-primary" type="submit" style="margin-top: 10px;">
+        SIMPAN DAN ANALISIS
+    </button>
+
+</form>
+
+
+        <!-- TABEL TAGIHAN -->
+        <div class="table-wrap" style="margin-top: 14px;">
+
+          <table>
+
+            <thead>
+              <tr>
+                <th>Tanggal Bulan</th>
+                <th>N. Ruangan</th>
+                <th>Pemakaian</th>
+                <th>STATUS</th>
+              </tr>
+            </thead>
+
+            <tbody id="billRows">
+              <!-- Data diisi oleh JavaScript -->
+            </tbody>
+
+          </table>
+
+        </div>
+
+        <!-- PAGINATION -->
+        <div class="pagination">
+
+          <button class="back" id="backBtn" type="button">
+            Back
+          </button>
+
+          <span id="pageCount" class="page-info">1 / 1</span>
+
+          <button class="next" id="nextBtn" type="button">
+            Next
+          </button>
+
+        </div>
+
+      </main>
+
+    </div>
+
+  </div>
+</div>
+
+<!-- NOTIFIKASI -->
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+
+<!-- JAVASCRIPT -->
+<script>
+
+// =====================================
+// DATA TAGIHAN
+// =====================================
+
+const bills = [
+  {month:"Okt-2026", room:"R. Kelas A", usage:800, status:"Normal"},
+  {month:"Okt-2026", room:"L. Komputer", usage:1200, status:"Boros"},
+  {month:"Nov-2026", room:"R. Seminar B", usage:450, status:"Hemat"},
+  {month:"Sep-2026", room:"R. Kelas A", usage:670, status:"Normal"},
+  {month:"Agu-2026", room:"R. T.U", usage:380, status:"Hemat"},
+  {month:"Nov-2026", room:"L. Komputer", usage:1150, status:"Boros"},
+  {month:"Sep-2026", room:"R. Seminar B", usage:920, status:"Normal"},
+  {month:"Agu-2026", room:"R. Kelas A", usage:490, status:"Hemat"},
+  {month:"Okt-2026", room:"R. T.U", usage:1050, status:"Boros"}
+];
+
+const rows = document.getElementById("billRows");
+
+let page = 0;
+const pageSize = 3;
+let filteredBills = [...bills];
+
+
+// =====================================
+// NOTIFIKASI
+// =====================================
+
+function notify(message) {
+
+  const toast = document.getElementById("toast");
+
+  toast.textContent = message;
+  toast.style.display = "block";
+
+  clearTimeout(window.toastTimer);
+
+  window.toastTimer = setTimeout(() => {
+    toast.style.display = "none";
+  }, 2300);
+
+}
+
+
+// =====================================
+// KELAS STATUS
+// =====================================
+
+function statusClass(status) {
+
+  if (status === "Normal") return "normal";
+
+  if (status === "Boros") return "boros";
+
+  return "hemat";
+
+}
+
+
+// =====================================
+// FORMAT ANGKA
+// =====================================
+
+function formatUsage(number) {
+  return number.toLocaleString("id-ID");
+}
+
+
+// =====================================
+// MENAMPILKAN DATA
+// =====================================
+
+function render() {
+
+  const shown = filteredBills.slice(
+    page * pageSize,
+    page * pageSize + pageSize
+  );
+
+  rows.innerHTML = "";
+
+  if (shown.length === 0) {
+
+    rows.innerHTML = `
+      <tr>
+        <td colspan="4" style="text-align:center; padding:15px;">
+          Tidak ada data yang cocok.
+        </td>
+      </tr>
+    `;
+
+  }
+
+  shown.forEach(bill => {
+
+    const tr = document.createElement("tr");
+
+    tr.innerHTML = `
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><span class="badge"></span></td>
+    `;
+
+    tr.children[0].textContent = bill.month;
+    tr.children[1].textContent = bill.room;
+    tr.children[2].textContent =
+      formatUsage(bill.usage) + " kWh";
+
+    const badge = tr.querySelector(".badge");
+
+    badge.textContent = bill.status;
+    badge.classList.add(statusClass(bill.status));
+
+    rows.appendChild(tr);
+
+  });
+
+  const total = Math.max(
+    1,
+    Math.ceil(filteredBills.length / pageSize)
+  );
+
+  document.getElementById("pageCount").textContent =
+    (page + 1) + " / " + total;
+
+  document.getElementById("backBtn").disabled =
+    page === 0;
+
+  document.getElementById("nextBtn").disabled =
+    page >= total - 1;
+
+}
+
+
+// =====================================
+// FILTER DATA
+// =====================================
+
+document.getElementById("filterForm")
+  .addEventListener("submit", function(e) {
+
+    e.preventDefault();
+
+    const room = document.getElementById("roomFilter").value;
+    const month = document.getElementById("monthFilter").value;
+    const usage = document.getElementById("usageFilter").value;
+
+    filteredBills = bills.filter(bill => {
+
+      const matchRoom =
+        !room || bill.room === room;
+
+      const matchMonth =
+        !month || bill.month === month;
+
+      let matchUsage = true;
+
+      if (usage === "low") {
+
+        matchUsage = bill.usage < 500;
+
+      } else if (usage === "medium") {
+
+        matchUsage =
+          bill.usage >= 500 && bill.usage < 1000;
+
+      } else if (usage === "high") {
+
+        matchUsage = bill.usage >= 1000;
+
+      }
+
+      return matchRoom && matchMonth && matchUsage;
+
+    });
+
+    page = 0;
+
+    render();
+
+    notify("Filter berhasil diterapkan.");
+
+  });
+
+
+// =====================================
+// TOMBOL BACK
+// =====================================
+
+document.getElementById("backBtn")
+  .addEventListener("click", function() {
+
+    if (page > 0) {
+
+      page--;
+
+      render();
+
+    }
+
+  });
+
+
+// =====================================
+// TOMBOL NEXT
+// =====================================
+
+document.getElementById("nextBtn")
+  .addEventListener("click", function() {
+
+    const total = Math.ceil(
+      filteredBills.length / pageSize
+    );
+
+    if (page < total - 1) {
+
+      page++;
+
+      render();
+
+    }
+
+  });
+
+
+// =====================================
+// DROPDOWN PROFIL
+// =====================================
+
+(function() {
+
+  const btn = document.getElementById("profileBtn");
+  const menu = document.getElementById("profileMenu");
+
+  function setOpen(open) {
+
+    menu.hidden = !open;
+
+    btn.setAttribute(
+      "aria-expanded",
+      open ? "true" : "false"
+    );
+
+  }
+
+  btn.addEventListener("click", function(e) {
+
+    e.stopPropagation();
+
+    setOpen(menu.hidden);
+
+  });
+
+  document.addEventListener("click", function(e) {
+
+    if (
+      !menu.contains(e.target) &&
+      !btn.contains(e.target)
+    ) {
+
+      setOpen(false);
+
+    }
+
+  });
+
+  document.addEventListener("keydown", function(e) {
+
+    if (e.key === "Escape") {
+
+      setOpen(false);
+
+    }
+
+  });
+
+})();
+
+
+// =====================================
+// HAMBURGER SIDEBAR
+// =====================================
+
+const menuBtn = document.getElementById("menuBtn");
+const sidebar = document.getElementById("sidebar");
+
+menuBtn.addEventListener("click", function() {
+
+  const isCollapsed =
+    sidebar.classList.toggle("collapsed");
+
+  menuBtn.setAttribute(
+    "aria-expanded",
+    isCollapsed ? "false" : "true"
+  );
+
+});
+
+
+// =====================================
+// LOGOUT
+// =====================================
+
+document.getElementById("logout")
+  .addEventListener("click", function(e) {
+
+    e.preventDefault();
+
+    notify("Fungsi keluar (demo).");
+
+  });
+
+
+// =====================================
+// ANIMASI IKON PANAH FILTER
+// =====================================
+
+document.querySelectorAll(".select-wrapper select")
+  .forEach(function(select) {
+
+    const wrapper = select.closest(".select-wrapper");
+
+    function openArrow() {
+      wrapper.classList.add("is-open");
+    }
+
+    function closeArrow() {
+      wrapper.classList.remove("is-open");
+    }
+
+    // PANAH BERPUTAR SAAT SELECT DIKLIK
+    select.addEventListener("pointerdown", openArrow);
+
+    // PANAH BERPUTAR SAAT SELECT DIFOKUSKAN
+    select.addEventListener("focus", openArrow);
+
+    // PANAH KEMBALI SETELAH PILIHAN BERUBAH
+    select.addEventListener("change", closeArrow);
+
+    // PANAH KEMBALI SAAT SELECT KEHILANGAN FOKUS
+    select.addEventListener("blur", closeArrow);
+
+    // TOMBOL ESCAPE UNTUK MENUTUP
+    select.addEventListener("keydown", function(event) {
+
+      if (event.key === "Escape" || event.key === "Tab") {
+        closeArrow();
+      }
+
+    });
+
+  });
+
+
+// KLIK DI LUAR FILTER
+document.addEventListener("pointerdown", function(event) {
+
+  if (!event.target.closest(".select-wrapper")) {
+
+    document.querySelectorAll(".select-wrapper")
+      .forEach(function(wrapper) {
+
+        wrapper.classList.remove("is-open");
+
+      });
+
+  }
+
+});
+
+
+// =====================================
+// TAMPILKAN DATA AWAL
+// =====================================
+
+render();
+
+</script>
+
+</body>
+</html>
