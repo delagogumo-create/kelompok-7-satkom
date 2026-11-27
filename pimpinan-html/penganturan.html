@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Pengaturan - Sistem Konsumsi Listrik</title>
+
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23fbbf24'><path d='M13.5 2 5 13.5h6L10 22l9-12h-6.2L13.5 2Z'/></svg>">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/global.css">
+    <link rel="stylesheet" href="../../css/components.css">
+</head>
+
+<body class="page-pengaturan">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+
+        <div class="brand">
+            <div class="logo">
+                <svg viewBox="0 0 24 24">
+                    <path d="M13.5 2 5 13.5h6L10 22l9-12h-6.2L13.5 2Z"/>
+                </svg>
+            </div>
+
+            <span class="brand-text">Sistem Konsumsi<br>Listrik</span>
+        </div>
+
+        <!-- MENU SIDEBAR -->
+        <nav class="nav">
+
+            <a href="dashboard-pimpinan.html">
+                <svg class="i" viewBox="0 0 24 24">
+                    <rect x="3" y="3" width="7" height="7" rx="2"/>
+                    <rect x="14" y="3" width="7" height="7" rx="2"/>
+                    <rect x="3" y="14" width="7" height="7" rx="2"/>
+                    <rect x="14" y="14" width="7" height="7" rx="2"/>
+                </svg>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="laporan.html">
+                <svg class="i" viewBox="0 0 24 24">
+                    <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Z"/>
+                    <path d="M14 3v5h5"/>
+                    <path d="M9 13h6M9 17h4"/>
+                </svg>
+                <span>Laporan</span>
+            </a>
+
+            <a href="analisis.html">
+                <svg class="i" viewBox="0 0 24 24">
+                    <path d="M4 21V9M9 21V4M14 21V8M19 21V12"/>
+                    <path d="M2 21h20"/>
+                </svg>
+                <span>Analisis</span>
+            </a>
+
+        </nav>
+
+        <!-- LOGOUT -->
+        <div class="sidebar-bottom">
+            <a href="../auth/login.html" class="logout" id="logout" title="Keluar">
+                <svg class="i" viewBox="0 0 24 24">
+                    <path d="M10 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h4"/>
+                    <path d="M14 8l4 4-4 4M18 12H8"/>
+                </svg>
+                <span>Keluar</span>
+            </a>
+        </div>
+
+    </aside>
+
+    <!-- MAIN -->
+    <div class="main">
+
+        <!-- TOPBAR -->
+        <header class="topbar">
+
+            <button
+                class="hamb"
+                id="menuBtn"
+                type="button"
+                aria-label="Buka atau tutup menu"
+                aria-expanded="true">
+
+                <svg class="i" viewBox="0 0 24 24">
+                    <path d="M4 7h16M4 12h10M4 17h16"/>
+                </svg>
+
+            </button>
+
+            <!-- PROFIL -->
+            <div class="profile-wrap">
+
+                <button
+                    class="profile"
+                    id="profileBtn"
+                    type="button"
+                    aria-haspopup="true"
+                    aria-expanded="false">
+
+                    <span class="profile-name">Pimpinan</span>
+
+                    <span class="avatar" id="topAvatar">
+                        <svg class="i" viewBox="0 0 24 24">
+                            <circle cx="12" cy="8" r="4"/>
+                            <path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/>
+                        </svg>
+                    </span>
+
+                    <span class="caret">v</span>
+
+                </button>
+
+                <!-- DROPDOWN -->
+                <div class="dropdown" id="profileMenu" role="menu" hidden>
+
+                    <a href="edit-profil.html" role="menuitem">
+                        <svg class="i" viewBox="0 0 24 24">
+                            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                            <circle cx="9" cy="7" r="4"/>
+                            <path d="M19 11l3 3L13 23l-4 1 1-4 9-9z"/>
+                        </svg>
+                        <span>Edit Profil</span>
+                    </a>
+
+                    <a href="pengaturan.html" role="menuitem">
+                        <svg class="i" viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="3"/>
+                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                        </svg>
+                        <span>Pengaturan</span>
+                    </a>
+
+                </div>
+
+            </div>
+
+        </header>
+
+        <!-- KONTEN -->
+        <main class="content">
+
+            <div class="page-heading">
+                <h1>Pengaturan</h1>
+                <p>Atur bahasa dan tampilan aplikasi</p>
+            </div>
+
+            <!-- KARTU PENGATURAN -->
+            <section class="settings-card card">
+
+                <form id="settingsForm" novalidate>
+
+                    <!-- BAHASA -->
+                    <div class="field language-field">
+                        <label for="bahasa">Bahasa</label>
+                        <select id="bahasa" name="bahasa">
+                            <option value="id">Bahasa Indonesia</option>
+                            <option value="en">English</option>
+                        </select>
+                    </div>
+
+                    <!-- TEMA -->
+                    <div class="setting-row">
+                        <div class="setting-info">
+                            <strong>Tema</strong>
+                            <small>Pilih warna tampilan aplikasi</small>
+                        </div>
+
+                        <div class="seg">
+                            <label>
+                                <input type="radio" name="tema" value="terang" checked>
+                                <span>Terang</span>
+                            </label>
+
+                            <label>
+                                <input type="radio" name="tema" value="gelap">
+                                <span>Gelap</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- UKURAN HURUF -->
+                    <div class="setting-row">
+                        <div class="setting-info">
+                            <strong>Ukuran Huruf</strong>
+                            <small>Atur besar teks agar nyaman dibaca</small>
+                        </div>
+
+                        <div class="seg">
+                            <label>
+                                <input type="radio" name="huruf" value="kecil">
+                                <span>Kecil</span>
+                            </label>
+
+                            <label>
+                                <input type="radio" name="huruf" value="sedang" checked>
+                                <span>Sedang</span>
+                            </label>
+
+                            <label>
+                                <input type="radio" name="huruf" value="besar">
+                                <span>Besar</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- SIDEBAR OTOMATIS -->
+                    <div class="setting-row sidebar-setting">
+                        <div class="setting-info">
+                            <strong>Sidebar terbuka otomatis</strong>
+                            <small>Tampilkan menu samping secara penuh saat halaman dibuka</small>
+                        </div>
+
+                        <label class="switch">
+                            <input type="checkbox" id="sidebarOtomatis" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <!-- TOMBOL -->
+                    <div class="form-actions">
+                        <button type="reset" class="btn-cancel">Batal</button>
+                        <button type="submit" class="btn-save">Simpan Pengaturan</button>
+                    </div>
+
+                </form>
+
+            </section>
+
+        </main>
+
+    </div>
+
+    <!-- MENGHUBUNGKAN FILE JAVASCRIPT -->
+    <!-- Tag script lama yang panjang sudah dihapus dan diganti dengan pemanggilan file eksternal ini -->
+    <script src="../../js/pimpinan/pengaturan.js"></script>
+
+</body>
+</html>
