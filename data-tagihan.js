@@ -1,239 +1,148 @@
-(function () {
-    // ===== Konstanta =====
-    const BARIS_PER_HALAMAN = 3;
-    const BATAS_HEMAT = 500;
-    const BATAS_BOROS = 1000;
-    const TAHUN_FILTER = 2026;
-    const URUTAN_BULAN = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+document.addEventListener("DOMContentLoaded", function () {
+    const tableBody = document.getElementById("tableBodyTagihan");
+    const filterRuangan = document.getElementById("filterRuangan");
+    const filterBulan = document.getElementById("filterBulan");
+    const btnSimpanAnalisis = document.getElementById("btnSimpanAnalisis");
 
-    // ===== Terjemahan nama ruangan =====
-    const TERJEMAHAN_RUANG = {
-        'kelas':        'Classroom',
-        'komputer':     'Computer Room',
-        'dosen':        'Lecturer Room',
-        'guru':         'Teacher Room',
-        'tu':           'Administration Office',
-        'rapat':        'Meeting Room',
-        'lab':          'Lab Room',
-        'seminar':      'Seminar Room',
-        'perpustakaan': 'Library',
-        'perpus':       'Library',
-        'musholla':     'Prayer Room',
-        'umum':         'General Room',
-        'kantor':       'Office',
-        'gudang':       'Storage Room',
-        'jt1':          'JT1 Room'
-    };
+    // ==========================================
+    // 1. FITUR LIVE FILTERING (Pencarian & Filter)
+    // ==========================================
+    function filterTable() {
+        const keywordRuangan = filterRuangan.value.toLowerCase();
+        const keywordBulan = filterBulan.value.toLowerCase();
+        const rows = tableBody.getElementsByTagName("tr");
 
-    const TERJEMAHAN_LAB = {
-        'komputer':   'Computer',
-        'bahasa':     'Language',
-        'fisika':     'Physics',
-        'kimia':      'Chemistry',
-        'biologi':    'Biology',
-        'jaringan':   'Network',
-        'multimedia': 'Multimedia'
-    };
+        for (let row of rows) {
+            const colBulan = row.cells[0].textContent.toLowerCase();
+            const colRuangan = row.cells[1].textContent.toLowerCase();
 
-    const TEKS_LOKAL = {
-        kosongTabel:  ['Tidak ada data yang cocok.', 'No matching data.'],
-        kosongFilter: ['Tidak ada data yang cocok dengan filter.', 'No data matches the filter.']
-    };
+            const matchRuangan = keywordRuangan === "" || colRuangan.includes(keywordRuangan);
+            const matchBulan = keywordBulan === "" || colBulan.includes(keywordBulan);
 
-    // ===== Data dari Database PHP =====
-    const dataTagihan = Array.isArray(window.DATA_TAGIHAN_DB) ? window.DATA_TAGIHAN_DB : [];
-
-    // ===== Elemen =====
-    const badanTabel = document.getElementById('billRows');
-    const formFilter = document.getElementById('filterForm');
-    const filterRuangan = document.getElementById('roomFilter');
-    const filterBulan = document.getElementById('monthFilter');
-    const filterPemakaian = document.getElementById('usageFilter');
-    const tombolBack = document.getElementById('backBtn');
-    const tombolNext = document.getElementById('nextBtn');
-    const infoHalaman = document.getElementById('pageCount');
-    const toast = document.getElementById('toast');
-
-    // ===== State =====
-    let hasilFilter = dataTagihan.slice();
-    let halamanSekarang = 1;
-    let timerToast = null;
-
-    // ===== Pengecekan Bahasa Pasti dari localStorage =====
-    function bahasaAktif() {
-        try {
-            const data = JSON.parse(localStorage.getItem('pengaturanAdmin')) || {};
-            const b = String(data.bahasa || '').toLowerCase();
-            if (b === 'en' || b.indexOf('eng') === 0 || b.indexOf('ing') === 0) {
-                return 'en';
+            if (matchRuangan && matchBulan) {
+                row.style.display = ""; // Tampilkan baris
+            } else {
+                row.style.display = "none"; // Sembunyikan baris
             }
-        } catch (e) {}
-
-        try {
-            const bagian = document.querySelectorAll('th, #sidebar, label');
-            let teks = '';
-            for (let i = 0; i < bagian.length; i++) {
-                teks += ' ' + bagian[i].textContent;
-            }
-            if (/Billing Month|Billing Data|Room Data|Select Room/i.test(teks)) return 'en';
-        } catch (e) {}
-
-        return 'id';
-    }
-
-    function teksLokal(kunci) {
-        return TEKS_LOKAL[kunci][bahasaAktif() === 'en' ? 1 : 0];
-    }
-
-    function normalisasiTeks(teks) {
-        return String(teks).toLowerCase().replace(/[\s.]/g, '');
-    }
-
-    function namaRuanganTampil(nama) {
-        try {
-            let teks = String(nama).trim();
-            
-            if (bahasaAktif() === 'en') {
-                const lower = teks.toLowerCase();
-                if (lower.includes('lab komputer 1') || lower.includes('laboratorium komputer 1')) return 'Computer Lab 1';
-                if (lower.includes('lab komputer 2') || lower.includes('laboratorium komputer 2')) return 'Computer Lab 2';
-                if (lower.includes('lab komputer') || lower.includes('laboratorium komputer')) return 'Computer Lab';
-                if (lower.includes('perpustakaan') || lower.includes('perpus')) return 'Library';
-            }
-
-            return nama;
-        } catch (error) {
-            return nama;
         }
     }
 
-    function terjemahkanPilihanRuangan() {
-        try {
-            Array.from(filterRuangan.options).forEach(function (pilihan) {
-                if (pilihan.dataset.asli === undefined) {
-                    pilihan.dataset.asli = pilihan.value;
-                    pilihan.value = pilihan.dataset.asli;
-                }
-                if (pilihan.dataset.asli === '') return;
+    if (filterRuangan) filterRuangan.addEventListener("change", filterTable);
+    if (filterBulan) filterBulan.addEventListener("input", filterTable);
 
-                const teks = namaRuanganTampil(pilihan.dataset.asli);
-                if (pilihan.textContent !== teks) pilihan.textContent = teks;
-            });
-        } catch (error) {}
-    }
+    // ==========================================
+    // 2. SIMPAN DAN ANALISIS (Rule-Based Status)
+    // ==========================================
+    if (btnSimpanAnalisis) {
+        btnSimpanAnalisis.addEventListener("click", function () {
+            const ruanganVal = document.getElementById("inputRuangan").value.trim();
+            const bulanVal = document.getElementById("inputBulan").value.trim();
+            const kwhVal = parseFloat(document.getElementById("inputKwh").value);
 
-    function isiPilihanBulan() {
-        filterBulan.innerHTML = '<option value="">Semua Bulan</option>' +
-            URUTAN_BULAN.map(function (bulan) {
-                const nilai = bulan + '-' + TAHUN_FILTER;
-                return '<option value="' + nilai + '">' + nilai + '</option>';
-            }).join('');
-    }
+            // Validasi Form
+            if (!ruanganVal || !bulanVal || isNaN(kwhVal)) {
+                alert("Harap lengkapi Nama Ruangan, Bulan, dan Jumlah kWh terlebih dahulu!");
+                return;
+            }
 
-    function hitungStatus(kwh) {
-        if (kwh < BATAS_HEMAT) return 'Hemat';
-        if (kwh < BATAS_BOROS) return 'Normal';
-        return 'Boros';
-    }
+            // Logika Analisis Otomatis Status Listrik
+            let statusText = "Normal";
+            let statusClass = "normal";
 
-    function cocokPemakaian(kwh, pilihan) {
-        if (pilihan === 'low') return kwh < BATAS_HEMAT;
-        if (pilihan === 'medium') return kwh >= BATAS_HEMAT && kwh < BATAS_BOROS;
-        if (pilihan === 'high') return kwh >= BATAS_BOROS;
-        return true;
-    }
+            if (kwhVal > 1000) {
+                statusText = "Boros";
+                statusClass = "boros";
+            } else if (kwhVal < 500) {
+                statusText = "Hemat";
+                statusClass = "hemat";
+            }
 
-    function terapkanFilter() {
-        const ruangan = filterRuangan.value;
-        const bulan = filterBulan.value;
-        const pemakaian = filterPemakaian.value;
+            // Buat elemen baris baru secara dinamis (DOM Manipulation)
+            const newRow = document.createElement("tr");
+            newRow.innerHTML = `
+                <td>${bulanVal}</td>
+                <td>${ruanganVal}</td>
+                <td>${kwhVal} kWh</td>
+                <td><span class="status ${statusClass}">${statusText}</span></td>
+                <td>
+                    <button class="btn-edit" title="Edit">✏️</button>
+                    <button class="btn-delete" title="Hapus">🗑️</button>
+                </td>
+            `;
 
-        hasilFilter = dataTagihan.filter(function (tagihan) {
-            const cocokRuangan = ruangan === '' || tagihan.ruangan === ruangan;
-            const cocokBulan = bulan === '' || tagihan.bulan === bulan;
-            return cocokRuangan && cocokBulan && cocokPemakaian(tagihan.kwh, pemakaian);
+            tableBody.appendChild(newRow);
+
+            // Kosongkan input form setelah disimpan
+            document.getElementById("inputRuangan").value = "";
+            document.getElementById("inputBulan").value = "";
+            document.getElementById("inputKwh").value = "";
+
+            alert(`Data berhasil disimpan! Hasil Analisis Status: ${statusText}`);
         });
-
-        halamanSekarang = 1;
-        tampilkanTabel();
     }
 
-    function buatBaris(tagihan) {
-        const status = hitungStatus(tagihan.kwh);
-        const baris = document.createElement('tr');
-        baris.innerHTML = '<td></td><td></td><td></td><td><span class="badge"></span></td>';
+    // ==========================================
+    // 3. TOMBOL AKSI: HAPUS & EDIT (Event Delegation)
+    // ==========================================
+    tableBody.addEventListener("click", function (e) {
+        const target = e.target;
+        const row = target.closest("tr");
 
-        baris.children[0].textContent = tagihan.bulan;
-        baris.children[1].textContent = namaRuanganTampil(tagihan.ruangan);
-        baris.children[2].textContent = formatAngka(tagihan.kwh) + ' kWh';
-
-        const lencana = baris.querySelector('.badge');
-        
-        // Perbaikan kelas dan teks lencana status agar warna birunya muncul kembali
-        if (bahasaAktif() === 'en') {
-            if (status === 'Hemat') { 
-                lencana.textContent = 'Saving'; 
-                lencana.className = 'badge hemat'; 
-            } else if (status === 'Boros') { 
-                lencana.textContent = 'Wasteful'; 
-                lencana.className = 'badge boros'; 
-            } else { 
-                lencana.textContent = 'Normal'; 
-                lencana.className = 'badge normal'; 
+        // Fungsi Tombol Hapus
+        if (target.classList.contains("btn-delete") || target.closest(".btn-delete")) {
+            if (confirm("Apakah Anda yakin ingin menghapus data tagihan ini?")) {
+                row.remove();
+                alert("Data tagihan berhasil dihapus.");
             }
-        } else {
-            lencana.textContent = status;
-            lencana.classList.add(status.toLowerCase());
         }
 
-        return baris;
-    }
+        // Fungsi Tombol Edit
+        if (target.classList.contains("btn-edit") || target.closest(".btn-edit")) {
+            const bulan = row.cells[0].textContent;
+            const ruangan = row.cells[1].textContent;
+            const kwh = row.cells[2].textContent.replace(" kWh", "");
 
-    function tampilkanBarisKosong() {
-        badanTabel.innerHTML = '<tr><td colspan="4" style="text-align:center; padding:15px;">' + teksLokal('kosongTabel') + '</td></tr>';
-    }
+            // Masukkan data lama kembali ke form input untuk diperbarui
+            document.getElementById("inputBulan").value = bulan;
+            document.getElementById("inputRuangan").value = ruangan;
+            document.getElementById("inputKwh").value = kwh;
 
-    function tampilkanTabel() {
-        const totalHalaman = Math.max(1, Math.ceil(hasilFilter.length / BARIS_PER_HALAMAN));
-        const awal = (halamanSekarang - 1) * BARIS_PER_HALAMAN;
-        const tampil = hasilFilter.slice(awal, awal + BARIS_PER_HALAMAN);
-
-        badanTabel.innerHTML = '';
-        if (tampil.length === 0) {
-            tampilkanBarisKosong();
-        } else {
-            tampil.forEach(function (tagihan) {
-                badanTabel.appendChild(buatBaris(tagihan));
-            });
+            // Hapus baris lama agar nanti tersimpan sebagai data baru / ter-update
+            row.remove();
+            alert("Data ditarik ke form input. Silakan ubah datanya lalu klik 'SIMPAN DAN ANALISIS'.");
         }
-
-        infoHalaman.textContent = halamanSekarang + ' / ' + totalHalaman;
-        tombolBack.disabled = halamanSekarang <= 1;
-        tombolNext.disabled = halamanSekarang >= totalHalaman;
-    }
-
-    function halamanSebelumnya() {
-        if (halamanSekarang > 1) { halamanSekarang--; tampilkanTabel(); }
-    }
-
-    function halamanBerikutnya() {
-        const totalHalaman = Math.ceil(hasilFilter.length / BARIS_PER_HALAMAN);
-        if (halamanSekarang < totalHalaman) { halamanSekarang++; tampilkanTabel(); }
-    }
-
-    formFilter.addEventListener('submit', function(e) {
-        e.preventDefault();
-        terapkanFilter();
     });
 
-    tombolBack.addEventListener('click', halamanSebelumnya);
-    tombolNext.addEventListener('click', halamanBerikutnya);
+    // ==========================================
+    // 4. NAVIGASI PAGINATION (Back & Next)
+    // ==========================================
+    const btnBack = document.getElementById("btnBack");
+    const btnNext = document.getElementById("btnNext");
+    const pageInfo = document.getElementById("pageInfo");
+    
+    let currentPage = 1;
+    const maxPage = 3;
 
-    [filterRuangan, filterBulan, filterPemakaian].forEach(function (pilihan) {
-        pilihan.addEventListener('change', terapkanFilter);
-    });
+    if (btnNext) {
+        btnNext.addEventListener("click", function () {
+            if (currentPage < maxPage) {
+                currentPage++;
+                pageInfo.textContent = `${currentPage} / ${maxPage}`;
+                // Di sini nanti bisa diintegrasikan pemuatan data halaman berikutnya
+            } else {
+                alert("Anda sudah berada di halaman terakhir.");
+            }
+        });
+    }
 
-    isiPilihanBulan();
-    tampilkanTabel();
-    terjemahkanPilihanRuangan();
-})();
+    if (btnBack) {
+        btnBack.addEventListener("click", function () {
+            if (currentPage > 1) {
+                currentPage--;
+                pageInfo.textContent = `${currentPage} / ${maxPage}`;
+            } else {
+                alert("Anda sudah berada di halaman pertama.");
+            }
+        });
+    }
+});
