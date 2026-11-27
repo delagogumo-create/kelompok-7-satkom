@@ -1,0 +1,339 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard Pimpinan - Sistem Konsumsi Listrik</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../../css/global.css">
+    <link rel="stylesheet" href="../../css/components.css">
+</head>
+
+<body class="page-dashboard-pimpinan">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+
+        <div class="brand">
+            <div class="logo">
+                <svg viewBox="0 0 24 24">
+                    <path d="M13.5 2 5 13.5h6L10 22l9-12h-6.2L13.5 2Z"/>
+                </svg>
+            </div>
+
+            <span>Sistem Konsumsi<br>Listrik</span>
+        </div>
+
+        <nav class="nav">
+
+            <a href="dashboard-pimpinan.html" class="active">
+                <svg class="i" viewBox="0 0 24 24">
+                    <rect x="3" y="3" width="7" height="7" rx="2"/>
+                    <rect x="14" y="3" width="7" height="7" rx="2"/>
+                    <rect x="3" y="14" width="7" height="7" rx="2"/>
+                    <rect x="14" y="14" width="7" height="7" rx="2"/>
+                </svg>
+                Dashboard
+            </a>
+
+            <a href="laporan.html">
+                <svg class="i" viewBox="0 0 24 24">
+                    <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Z"/>
+                    <path d="M14 3v5h5"/>
+                    <path d="M9 13h6M9 17h4"/>
+                </svg>
+                Laporan
+            </a>
+
+            <a href="analisis.html">
+                <svg class="i" viewBox="0 0 24 24">
+                    <path d="M4 21V9M9 21V4M14 21V8M19 21V12"/>
+                    <path d="M2 21h20"/>
+                </svg>
+                Analisis
+            </a>
+
+        </nav>
+
+        <a href="#" class="logout">
+            <svg class="i" viewBox="0 0 24 24">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                <path d="M16 17l5-5-5-5"/>
+                <path d="M21 12H9"/>
+            </svg>
+            Keluar
+        </a>
+
+    </aside>
+
+    <!-- MAIN -->
+    <div class="main">
+
+        <!-- TOPBAR -->
+        <header class="topbar">
+
+            <button
+                class="hamburger"
+                id="menuBtn"
+                type="button"
+                aria-label="Buka atau tutup menu"
+                aria-expanded="true">
+
+                <svg class="i" viewBox="0 0 24 24">
+                    <path d="M4 7h16M4 12h10M4 17h16"/>
+                </svg>
+
+            </button>
+
+            <!-- PROFILE -->
+            <div class="profile-wrap">
+
+                <button
+                    class="profile-btn"
+                    id="profileBtn"
+                    type="button"
+                    aria-haspopup="true"
+                    aria-expanded="false">
+
+                    <span>Pimpinan</span>
+
+                    <span class="avatar">
+                        <svg class="i" viewBox="0 0 24 24">
+                            <circle cx="12" cy="8" r="4"/>
+                            <path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/>
+                        </svg>
+                    </span>
+
+                </button>
+
+                <!-- DROPDOWN PROFIL -->
+                <div
+                    class="dropdown"
+                    id="profileMenu"
+                    role="menu"
+                    hidden>
+
+                    <a href="edit-profil.html" role="menuitem">
+                        <svg class="i" viewBox="0 0 24 24">
+                            <circle cx="10" cy="8" r="4"/>
+                            <path d="M3 21c0-4 3-6.5 7-6.5"/>
+                            <path d="M13 21h3.5L21 16.5a1.8 1.8 0 0 0-2.5-2.5L13 19.5V21Z"/>
+                        </svg>
+
+                        <span>Edit Profil</span>
+                    </a>
+
+                    <a href="pengaturan.html" role="menuitem">
+                        <svg class="i" viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="3"/>
+                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                        </svg>
+
+                        <span>Pengaturan</span>
+                    </a>
+
+                </div>
+
+            </div>
+
+        </header>
+
+        <!-- KONTEN DASHBOARD -->
+        <main class="content">
+
+            <h1>Dashboard Pimpinan</h1>
+
+            <p class="sub">
+                Ringkasan konsumsi dan efisiensi energi gedung kampus, Oktober 2026
+            </p>
+
+            <!-- RINGKASAN -->
+            <div class="cards">
+
+                <div class="stat">
+
+                    <div class="stat-icon yellow">
+                        <svg class="i" viewBox="0 0 24 24">
+                            <path d="M13.5 2 5 13.5h6L10 22l9-12h-6.2L13.5 2Z"/>
+                        </svg>
+                    </div>
+
+                    <div>
+                        <div class="stat-label">Total Pemakaian Listrik</div>
+
+                        <div class="stat-value">
+                            1.550<span>kWh</span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="stat">
+
+                    <div class="stat-icon green">
+                        <svg class="i" viewBox="0 0 24 24">
+                            <path d="M4 16a8 8 0 1 1 16 0"/>
+                            <path d="M12 16l4-5"/>
+                        </svg>
+                    </div>
+
+                    <div>
+                        <div class="stat-label">Efisiensi Rata-rata</div>
+                        <div class="stat-value">86%</div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- PERINGATAN -->
+            <div class="alert" role="alert">
+
+                <svg class="i" viewBox="0 0 24 24">
+                    <path d="M12 3 2 20h20L12 3Z"/>
+                    <path d="M12 10v4M12 17.5v.5"/>
+                </svg>
+
+                <div>
+                    <strong>Peringatan: 2 ruang Boros</strong>
+
+                    <p>
+                        Lihat rekomendasi efisiensi pada menu
+                        <a href="analisis.html">Analisis</a>.
+                    </p>
+                </div>
+
+            </div>
+
+            <!-- GRAFIK PERBANDINGAN -->
+            <section class="card chart">
+
+                <div class="card-head">
+                    <h2>Perbandingan per Ruangan</h2>
+                    <span class="hint">Pemakaian listrik (kWh)</span>
+                </div>
+
+                <svg
+                    viewBox="0 0 800 285"
+                    role="img"
+                    aria-label="Grafik batang pemakaian listrik per ruangan">
+
+                    <!-- GARIS BANTU -->
+                    <line class="grid" x1="60" x2="790" y1="20" y2="20"/>
+                    <line class="grid" x1="60" x2="790" y1="64" y2="64"/>
+                    <line class="grid" x1="60" x2="790" y1="108" y2="108"/>
+                    <line class="grid" x1="60" x2="790" y1="152" y2="152"/>
+                    <line class="grid" x1="60" x2="790" y1="196" y2="196"/>
+                    <line class="base" x1="60" x2="790" y1="240" y2="240"/>
+
+                    <!-- SUMBU Y -->
+                    <text class="axis" x="52" y="24" text-anchor="end">2500</text>
+                    <text class="axis" x="52" y="68" text-anchor="end">2000</text>
+                    <text class="axis" x="52" y="112" text-anchor="end">1500</text>
+                    <text class="axis" x="52" y="156" text-anchor="end">1000</text>
+                    <text class="axis" x="52" y="200" text-anchor="end">500</text>
+                    <text class="axis" x="52" y="244" text-anchor="end">0</text>
+
+                    <!-- BATANG GRAFIK -->
+                    <path class="bar"
+                        d="M122 240 V105.1 a5 5 0 0 1 5-5 H173 a5 5 0 0 1 5 5 V240 Z">
+                        <title>R. Kelas A: 1.590 kWh</title>
+                    </path>
+
+                    <path class="bar"
+                        d="M302 240 V139.4 a5 5 0 0 1 5-5 H353 a5 5 0 0 1 5 5 V240 Z">
+                        <title>L. Komputer: 1.200 kWh</title>
+                    </path>
+
+                    <path class="bar"
+                        d="M482 240 V174.6 a5 5 0 0 1 5-5 H533 a5 5 0 0 1 5 5 V240 Z">
+                        <title>R. Dosen: 800 kWh</title>
+                    </path>
+
+                    <path class="bar"
+                        d="M662 240 V142.9 a5 5 0 0 1 5-5 H713 a5 5 0 0 1 5 5 V240 Z">
+                        <title>R. TU: 1.160 kWh</title>
+                    </path>
+
+                    <!-- NILAI -->
+                    <text class="val" x="150" y="92" text-anchor="middle">1.590</text>
+                    <text class="val" x="330" y="126" text-anchor="middle">1.200</text>
+                    <text class="val" x="510" y="162" text-anchor="middle">800</text>
+                    <text class="val" x="690" y="130" text-anchor="middle">1.160</text>
+
+                    <!-- LABEL RUANGAN -->
+                    <text class="xlabel" x="150" y="264" text-anchor="middle">R. Kelas A</text>
+                    <text class="xlabel" x="330" y="264" text-anchor="middle">L. Komputer</text>
+                    <text class="xlabel" x="510" y="264" text-anchor="middle">R. Dosen</text>
+                    <text class="xlabel" x="690" y="264" text-anchor="middle">R. TU</text>
+
+                </svg>
+
+            </section>
+
+        </main>
+
+    </div>
+
+    <!-- JAVASCRIPT -->
+    <script>
+    (function () {
+
+        // DROPDOWN PROFIL
+        const profileBtn = document.getElementById('profileBtn');
+        const profileMenu = document.getElementById('profileMenu');
+
+        function setProfileOpen(open) {
+            profileMenu.hidden = !open;
+
+            profileBtn.setAttribute(
+                'aria-expanded',
+                open ? 'true' : 'false'
+            );
+        }
+
+        profileBtn.addEventListener('click', function (event) {
+            event.stopPropagation();
+            setProfileOpen(profileMenu.hidden);
+        });
+
+        document.addEventListener('click', function (event) {
+            if (
+                !profileMenu.contains(event.target) &&
+                !profileBtn.contains(event.target)
+            ) {
+                setProfileOpen(false);
+            }
+        });
+
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape') {
+                setProfileOpen(false);
+            }
+        });
+
+        // HAMBURGER SIDEBAR
+        const menuBtn = document.getElementById('menuBtn');
+
+        menuBtn.addEventListener('click', function () {
+
+            document.body.classList.toggle('nav-toggled');
+
+            menuBtn.setAttribute(
+                'aria-expanded',
+                document.body.classList.contains('nav-toggled')
+                    ? 'false'
+                    : 'true'
+            );
+
+        });
+
+    })();
+    </script>
+
+</body>
+</html>
