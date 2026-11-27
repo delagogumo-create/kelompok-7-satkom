@@ -1,13 +1,13 @@
 // =====================================================
-// EDIT PROFIL OPERATOR
+// EDIT PROFIL PIMPINAN
 // Halaman ini punya kode sidebar, dropdown, dan tombol Keluar sendiri,
 // jadi diatur di file ini.
 // =====================================================
 
-// ===== Proteksi halaman: harus login sebagai operator =====
+// ===== Proteksi halaman: harus login sebagai pimpinan =====
 try {
     const pengguna = JSON.parse(sessionStorage.getItem('pengguna'));
-    if (!pengguna || pengguna.peran !== 'operator') throw new Error();
+    if (!pengguna || pengguna.peran !== 'pimpinan') throw new Error();
 } catch (error) {
     window.location.replace('../auth/login.php');
 }
@@ -341,6 +341,16 @@ document.addEventListener('keydown', function (event) {
     }
 });
 
+// ===== Menu Pengaturan (halaman belum tersedia) =====
+// Hapus blok ini kalau pages/pimpinan/pengaturan.php sudah dibuat.
+const menuPengaturan = document.getElementById('menuPengaturan');
+if (menuPengaturan) {
+    menuPengaturan.addEventListener('click', function (event) {
+        event.preventDefault();
+        tampilkanToast('Halaman pengaturan belum tersedia.', true);
+    });
+}
+
 // ===== Hamburger sidebar =====
 const menuBtn = document.getElementById('menuBtn');
 const sidebar = document.getElementById('sidebar');
@@ -379,9 +389,9 @@ const defaultTopAvatar = topAvatar.innerHTML;
 function kunciFoto() {
     try {
         const p = JSON.parse(sessionStorage.getItem('pengguna'));
-        return 'fotoProfil_' + (p && p.username ? p.username : 'operator');
+        return 'fotoProfil_' + (p && p.username ? p.username : 'pimpinan');
     } catch (error) {
-        return 'fotoProfil_operator';
+        return 'fotoProfil_pimpinan';
     }
 }
 
@@ -438,7 +448,7 @@ function pasangFoto(src) {
         el.innerHTML = '';
         const img = document.createElement('img');
         img.src = src;
-        img.alt = 'Foto profil Operator';
+        img.alt = 'Foto profil Pimpinan';
         el.appendChild(img);
     });
 }
@@ -868,3 +878,20 @@ document.getElementById('logout').addEventListener('click', function (event) {
         if (e.key === 'Escape') tutup();
     });
 })();
+// ==========================================
+// PERBAIKAN LINK PENGATURAN
+// ==========================================
+document.addEventListener('click', function (e) {
+
+    var link = e.target.closest('.dropdown a, #profileMenu a, #user-dropdown a');
+    if (!link) return;
+
+    var teks = link.textContent.replace(/\s+/g, ' ').trim().toLowerCase();
+
+    if (teks === 'settings' || teks === 'pengaturan') {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        window.location.href = 'pengaturan.php';
+    }
+
+}, true);
