@@ -1,162 +1,170 @@
-/* =================================
-   PENGATURAN ADMIN - JAVASCRIPT
-================================= */
+// ===== HAMBURGER SIDEBAR =====
+const menuBtn = document.getElementById('menuBtn');
 
-// Kamus terjemahan lengkap untuk Admin
-const kamusAdmin = {
-    'Pengaturan': 'Settings',
-    'Pengaturan Admin': 'Admin Settings',
-    'Atur bahasa dan tampilan aplikasi': 'Configure application language and appearance',
-    'Bahasa': 'Language',
-    'Bahasa Indonesia': 'Indonesian',
-    'Bahasa Inggris': 'English',
-    'Tema': 'Theme',
-    'Terang': 'Light',
-    'Gelap': 'Dark',
-    'Ukuran Huruf': 'Font Size',
-    'Kecil': 'Small',
-    'Sedang': 'Medium',
-    'Besar': 'Large',
-    'Sidebar terbuka otomatis': 'Auto-open sidebar',
-    'Tampilkan menu samping secara penuh saat halaman dibuka': 'Display the side menu fully when the page is opened',
-    'Batal': 'Cancel',
-    'Simpan Pengaturan': 'Save Settings',
-    'Berhasil!': 'Success!',
-    'Pengaturan Admin berhasil disimpan.': 'Admin settings successfully saved.',
-    'OK': 'OK',
+menuBtn.addEventListener('click', function () {
+    document.body.classList.toggle('nav-collapsed');
+});
 
-    // Menu Sidebar & Header
-    'Dashboard': 'Dashboard',
-    'Data Ruangan': 'Room Data',
-    'Data Tagihan': 'Billing Data',
-    'Edit User': 'Edit User',
-    'Laporan': 'Reports',
-    'Keluar': 'Logout',
-    'Admin': 'Admin',
-    'Edit Profil': 'Edit Profile',
-    'Pengaturan': 'Settings'
-};
+// ===== DROPDOWN PROFIL =====
+const profileBtn = document.getElementById('profileBtn');
+const profileMenu = document.getElementById('profileMenu');
 
-function cekBahasaEn() {
-    let data = {};
-    try {
-        data = JSON.parse(localStorage.getItem('pengaturanAdmin')) || {};
-    } catch (e) {}
-    let b = String(data.bahasa || data.language || data.lang || '').toLowerCase();
-    return (b === 'en' || b.indexOf('eng') === 0 || b.indexOf('ing') === 0);
-}
+profileBtn.addEventListener('click', function (event) {
+    event.stopPropagation();
+    profileMenu.hidden = !profileMenu.hidden;
+});
 
-const T = text => (cekBahasaEn() && kamusAdmin[text]) ? kamusAdmin[text] : text;
-
-document.addEventListener('DOMContentLoaded', () => {
-    if (cekBahasaEn()) {
-        document.documentElement.lang = 'en';
-        document.title = 'Admin Settings - Electricity Usage System';
-
-        // Terjemahkan seluruh elemen teks di halaman secara agresif
-        document.querySelectorAll('h1, h2, h3, h4, h5, h6, label, span, p, a, button, option').forEach(el => {
-            let original = el.textContent.trim();
-            if (kamusAdmin[original]) {
-                el.textContent = kamusAdmin[original];
-            }
-        });
-    }
-
-    loadSettings();
-
-    const form = document.getElementById('settingsForm');
-    if (form) {
-        form.addEventListener('submit', function (e) {
-            e.preventDefault();
-            saveSettings();
-        });
+document.addEventListener('click', function (event) {
+    if (!profileBtn.contains(event.target) && !profileMenu.contains(event.target)) {
+        profileMenu.hidden = true;
     }
 });
 
-function loadSettings() {
-    try {
-        let data = JSON.parse(localStorage.getItem('pengaturanAdmin')) || {};
-        
-        // 1. Bahasa
-        if (data.bahasa) {
-            const selectBahasa = document.getElementById('bahasa');
-            if (selectBahasa) selectBahasa.value = data.bahasa;
-        }
+// ===== TOMBOL KELUAR (dengan konfirmasi) =====
+const tombolKeluar = document.getElementById('logout');
 
-        // 2. Tema (Radio Button)
-        if (data.tema) {
-            const temaRadio = document.querySelector(`input[name="tema"][value="${data.tema}"]`);
-            if (temaRadio) temaRadio.checked = true;
-        }
+tombolKeluar.addEventListener('click', function (event) {
+    event.preventDefault();
 
-        // 3. Ukuran Huruf (Radio Button)
-        if (data.huruf) {
-            const hurufRadio = document.querySelector(`input[name="huruf"][value="${data.huruf}"]`);
-            if (hurufRadio) hurufRadio.checked = true;
-        }
 
-        // 4. Sidebar Otomatis (Checkbox)
-        if (data.sidebar !== undefined) {
-            const sidebarCheck = document.getElementById('sidebarOtomatis');
-            if (sidebarCheck) sidebarCheck.checked = data.sidebar;
-        }
-    } catch (e) {}
+});
+
+// ===== PENGATURAN OPERATOR =====
+const settingsForm = document.getElementById('settingsForm');
+const storageKey = 'pengaturanOperator';
+
+function applySettings(data) {
+
+    document.body.classList.toggle('dark-theme', data.tema === 'gelap');
+
+    if (typeof terapkanBahasa === 'function') terapkanBahasa();
+
+    document.body.classList.remove(
+        'font-small',
+        'font-medium',
+        'font-large'
+    );
+
+    const fontClass = {
+        kecil: 'font-small',
+        sedang: 'font-medium',
+        besar: 'font-large'
+    };
+
+    document.body.classList.add(
+        fontClass[data.huruf] || 'font-medium'
+    );
+
+    document.body.classList.toggle(
+        'nav-collapsed',
+        data.sidebarOtomatis === false
+    );
+
 }
 
-function saveSettings() {
-    const bahasaSelect = document.getElementById('bahasa');
-    const temaChecked = document.querySelector('input[name="tema"]:checked');
-    const hurufChecked = document.querySelector('input[name="huruf"]:checked');
-    const sidebarCheck = document.getElementById('sidebarOtomatis');
+// ===== MEMUAT PENGATURAN =====
+function loadSettings() {
+
+    const defaults = {
+        bahasa: 'id',
+        tema: 'terang',
+        huruf: 'sedang',
+        sidebarOtomatis: true
+    };
+
+    let data = defaults;
+
+    try {
+
+        const saved = localStorage.getItem(storageKey);
+
+        if (saved) {
+            data = {
+                ...defaults,
+                ...JSON.parse(saved)
+            };
+        }
+
+    } catch (error) {
+        console.error('Gagal membaca pengaturan:', error);
+    }
+
+    document.getElementById('bahasa').value = data.bahasa;
+
+    const temaInput = document.querySelector(
+        `input[name="tema"][value="${data.tema}"]`
+    );
+
+    if (temaInput) {
+        temaInput.checked = true;
+    }
+
+    const hurufInput = document.querySelector(
+        `input[name="huruf"][value="${data.huruf}"]`
+    );
+
+    if (hurufInput) {
+        hurufInput.checked = true;
+    }
+
+    document.getElementById('sidebarOtomatis').checked =
+        data.sidebarOtomatis !== false;
+
+    applySettings(data);
+
+}
+
+// ===== SIMPAN PENGATURAN =====
+settingsForm.addEventListener('submit', function (event) {
+
+    event.preventDefault();
+
+    const temaChecked = document.querySelector(
+        'input[name="tema"]:checked'
+    );
+
+    const hurufChecked = document.querySelector(
+        'input[name="huruf"]:checked'
+    );
 
     const data = {
-        bahasa: bahasaSelect ? bahasaSelect.value : 'id',
+        bahasa: document.getElementById('bahasa').value,
         tema: temaChecked ? temaChecked.value : 'terang',
         huruf: hurufChecked ? hurufChecked.value : 'sedang',
-        sidebar: sidebarCheck ? sidebarCheck.checked : true
+        sidebarOtomatis: document.getElementById('sidebarOtomatis').checked
     };
 
-    localStorage.setItem('pengaturanAdmin', JSON.stringify(data));
+    localStorage.setItem(storageKey, JSON.stringify(data));
 
-    // Terapkan perubahan tema/huruf secara langsung ke elemen root/body
-    if (data.tema === 'gelap') {
-        document.documentElement.classList.add('dark-theme');
-    } else {
-        document.documentElement.classList.remove('dark-theme');
+    applySettings(data);
+
+    alert('Pengaturan Operator berhasil disimpan.');
+
+});
+
+// ===== TOMBOL BATAL =====
+settingsForm.addEventListener('reset', function () {
+    setTimeout(loadSettings, 0);
+});
+
+// ===== JALANKAN SAAT HALAMAN DIBUKA =====
+loadSettings();
+
+// ==========================================
+// SINKRONKAN TEMA (html mengikuti body)
+// ==========================================
+(function () {
+
+    function sinkron() {
+        var gelap = document.body.classList.contains('dark-theme');
+        document.documentElement.classList.toggle('dark-theme', gelap);
     }
 
-    showModal(T('Berhasil!'), T('Pengaturan Admin berhasil disimpan.'));
-}
+    new MutationObserver(sinkron).observe(document.body, {
+        attributes: true,
+        attributeFilter: ['class']
+    });
 
-function showModal(title, message) {
-    let overlay = document.getElementById('modalOverlay');
-    if (!overlay) {
-        overlay = document.createElement('div');
-        overlay.id = 'modalOverlay';
-        overlay.style.cssText = `
-            position: fixed; inset: 0; background: rgba(15, 23, 42, 0.5);
-            display: flex; align-items: center; justify-content: center; z-index: 9999;
-            backdrop-filter: blur(4px);
-        `;
-        overlay.innerHTML = `
-            <div style="background: #1e293b; color: #f8fafc; padding: 24px; border-radius: 16px; width: min(90vw, 360px); text-align: center; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);">
-                <div style="width: 48px; height: 48px; background: #dcfce7; color: #16a34a; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-size: 24px;">✓</div>
-                <h3 id="modalTitle" style="margin: 0 0 8px; font-size: 20px; font-weight: 700;"></h3>
-                <p id="modalMessage" style="margin: 0 0 20px; font-size: 14px; color: #94a3b8; line-height: 1.5;"></p>
-                <button id="modalBtn" style="width: 100%; padding: 10px; background: #2563eb; color: #fff; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;"></button>
-            </div>
-        `;
-        document.body.appendChild(overlay);
-    }
+    sinkron();
 
-    document.getElementById('modalTitle').textContent = title;
-    document.getElementById('modalMessage').textContent = message;
-    document.getElementById('modalBtn').textContent = T('OK');
-
-    overlay.style.display = 'flex';
-
-    document.getElementById('modalBtn').onclick = function () {
-        overlay.style.display = 'none';
-        location.reload();
-    };
-}
+})();
